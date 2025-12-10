@@ -109,6 +109,7 @@ const wishForm = {
   wish: "",
   serial: "" // 第几位许愿的
 }
+
 // XSS防护函数 - 将HTML转义为纯文本
 function escapeHtml(text) {
   if (typeof text !== 'string') return text;
@@ -487,15 +488,23 @@ $(function () {
     danmu_manager.mount(page2_danmu_container);
     // danmu_manager.startPlaying();
 
+    var page2_danmu_timer = null;
     // 开启弹幕定时器
     function startDanmuTimer() {
-      var page2_danmu_timer = setInterval(function () {
+      if (page2_danmu_timer) return;
+      page2_danmu_timer = setInterval(function () {
         if (commentListTemp.length > 0) {
           danmu_manager.push(commentListTemp.shift());
         } else {
           commentListTemp = JSON.parse(JSON.stringify(processCommentList(commentList)));
         }
       }, 1000 * 1);
+    }
+    // 关闭弹幕定时器
+    function stopDanmuTimer() {
+      if (!page2_danmu_timer) return;
+      clearInterval(page2_danmu_timer);
+      page2_danmu_timer = null;
     }
     //#endregion
 
@@ -519,13 +528,13 @@ $(function () {
       setTimeout(function () {
         $('#sub').removeClass('anjian');
       }, 400)
-      if (!$('#name').val()) {
+      if (!$('#name').val().trim()) {
         alert('请输入狗狗的名字！');
         return false;
-      } else if (!$('#tel').val()) {
+      } else if (!$('#tel').val().trim()) {
         alert('请输入你的微信ID或手机号！');
         return false;
-      } else if (!$('#wish').val()) {
+      } else if (!$('#wish').val().trim()) {
         alert('请输入你和小狗的圣诞愿望！');
         return false;
       } else {
@@ -562,17 +571,17 @@ $(function () {
       // 请求成功后执行的函数
       function executeAfterPostSuccess() {
         $.ajax({
-          url: `https://api.peidigroup.cn/ui/plant/christmas?pageNo=1&pageSize=9999999`,
+          url: `https://api.peidigroup.cn/ui/plant/christmas?pageNo=1&pageSize=1`,
           type: 'GET',
           success: function (response) {
             console.log('GET请求成功，total值为:', response);
 
-            wishForm.serial = response.data?.total;
+            wishForm.serial = response.data?.total ?? 0;
 
             // 安全地设置文本内容，使用text()而不是html()
             setSafeText('#page3_name', wishForm.name);
             setSafeText('#page3_wish', wishForm.wish);
-            setSafeText('#page3_serial', wishForm.serial.toString());
+            setSafeText('#page3_serial', String(wishForm.serial));
 
             setTimeout(function () {
 
