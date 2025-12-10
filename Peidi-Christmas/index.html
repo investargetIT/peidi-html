@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <meta content="telephone=no" name="format-detection" />
+    <meta name="description" content="爵宴圣诞活动许愿H5" />
+    <meta name="keywords" content="爵宴, MeatyWay, 圣诞, 许愿" />
+
+    <link rel="icon" href="./favicon.ico" />
+    <title>爵宴⭐圣诞摇尾奇妙夜</title>
+
+    <!-- <script
+      src="plugin/jquery/jquery-3.7.1.min.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script> -->
+    <script
+      src="plugin/jquery/jquery-1.10.2.min.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <script
+      src="plugin/danmu/danmu.umd.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <script
+      src="plugin/html2canvas/html2canvas.min.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <script
+      src="plugin/canvas2image/canvas2image.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+    <script
+      src="plugin/swiper/1.0.2/swiper.min.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <script
+      src="plugin/swiper/1.0.2/swiper.animate1.0.2.min.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+
+    <link rel="stylesheet" type="text/css" href="css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="css/christmas.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="plugin/swiper/1.0.2/swiper.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="plugin/animate/animate.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- #region 音乐 common_music -->
+    <div class="common_music-container">
+      <audio src="audio/music.mp3" id="common_music" loop="loop"></audio>
+      <img class="common_music" src="img/music-off.png" />
+    </div>
+    <!-- #endregion -->
+
+    <!-- #region 加载动画 common_loading -->
+    <div class="common_loading">
+      <div class="common_loading-main">
+        <div class="common_loading-img">
+          <!-- <img src="img/loading-bg.png" /> -->
+          <img src="img/MeatWay.png" />
+        </div>
+        <div class="common_loading-num"><span>0</span> %</div>
+      </div>
+    </div>
+    <!-- #endregion -->
+
+    <div class="swiper-container mc">
+      <div class="swiper-wrapper">
+        <!-- #region 场景1 -->
+        <div class="swiper-slide con1">
+          <div class="page1_curtain"></div>
+          <div class="page_snow page1_snow"></div>
+          <!-- <div class="page_pendant page1_pendant"></div> -->
+          <img class="page1_snow2" src="img/page-snow2.png" />
+          <img class="page1_snow3" src="img/page-snow2.png" />
+          <img class="page1_snow4" src="img/page-snow2.png" />
+          <img class="page1_star1" src="img/page1-star1.png" />
+
+          <!-- <div
+            class="page1_txt ani"
+            swiper-animate-effect="fadeIn"
+            swiper-animate-duration="1.5s"
+            swiper-animate-delay="0.5s"
+          >
+            <img src="img/MeatWay.webp" style="width: 36%" />
+            <img src="img/page1-txt1.png" style="width: 65%" />
+            <img src="img/loading-bg.png" style="width: 70%; opacity: 0.9" />
+          </div> -->
+
+          <div
+            class="page1_state ani"
+            swiper-animate-effect="fadeIn"
+            swiper-animate-duration="1s"
+            swiper-animate-delay="1s"
+          >
+            <img class="page1_butt" src="img/page1-butt.png" />
+          </div>
+        </div>
+        <!-- #endregion -->
+        <!-- #region 场景2 -->
+        <div class="swiper-slide con2">
+          <div class="page2_curtain"></div>
+          <div class="page_snow page2_snow"></div>
+          <!-- <div class="page_pendant2 page2_pendant"></div> -->
+
+          <div class="page2_sky">
+            <img class="po" src="img/page2-star1.png" style="opacity: 0.8" />
+            <img
+              class="page2_star2 po ani infinite"
+              swiper-animate-effect="swingInfi"
+              swiper-animate-duration="4s"
+              swiper-animate-delay="0s"
+              src="img/page2-star2.png"
+            />
+            <img
+              class="page2_star3 po ani infinite"
+              swiper-animate-effect="swingInfi"
+              swiper-animate-duration="4s"
+              swiper-animate-delay="2s"
+              src="img/page2-star3.png"
+            />
+            <img
+              class="page2_star4 po ani infinite"
+              swiper-animate-effect="swingInfi"
+              swiper-animate-duration="4s"
+              swiper-animate-delay="-1s"
+              src="img/page2-star4.png"
+            />
+          </div>
+
+          <!-- <div class="page2_logo">
+            <img src="img/MeatWay.webp" style="width: 36%" />
+          </div> -->
+
+          <div class="page2_danmu" id="page2_danmu"></div>
+
+          <div class="page2_state">
+            <img class="po" src="img/page2-tree.png" />
+          </div>
+
+          <!-- <div class="page2_txt">
+            <img src="img/page2-txt1.png" />
+          </div> -->
+
+          <div class="page2_butt-container">
+            <img class="page2_butt" src="img/page2-butt.png" />
+          </div>
+        </div>
+        <!-- #endregion -->
+        <!-- #region 场景3 -->
+        <div class="swiper-slide con3" id="hb">
+          <div class="page3_curtain">
+            <!-- crossorigin="anonymous" -->
+            <img
+              class="page3_bg"
+              src="img/page3-bg.png"
+              crossorigin="anonymous"
+            />
+          </div>
+          <!-- <div class="page_snow page3_snow"></div> -->
+          <!-- <div class="page_pendant3 page3_pendant"></div> -->
+
+          <!-- <div class="page3_logo">
+            <img src="img/MeatWay.webp" style="width: 36%" />
+          </div> -->
+          <div class="page3_card-bg-container">
+            <img
+              class="page3_card-bg"
+              src="img/page3-card3.png"
+              crossorigin="anonymous"
+            />
+          </div>
+
+          <div class="page3_card-greeting">
+            <div class="page3_card-greeting-item">
+              <span class="page3_card-greeting-label">狗狗的名字</span>
+              <span class="page3_card-greeting-value" id="page3_name"
+                >小贝</span
+              >
+            </div>
+            <div class="page3_card-greeting-item">
+              <span class="page3_card-greeting-label">你和小狗的圣诞愿望</span>
+              <span class="page3_card-greeting-value" id="page3_wish"
+                >想要爵宴风干粮春节大礼包</span
+              >
+            </div>
+          </div>
+
+          <!-- <div class="page3_card-container">
+            <div class="page3_card">
+              <div class="card-header">
+                <div class="card-icon">🎄</div>
+                <h3 class="card-title">圣诞愿望卡</h3>
+              </div>
+              <div class="page3_card-content">
+                <div class="page3_card-info-item">
+                  <span class="page3_card-info-label">狗狗的名字</span>
+                  <span class="page3_card-info-value" id="page3_name"
+                    >小贝</span
+                  >
+                </div>
+                <div class="page3_card-info-item">
+                  <span class="page3_card-info-label">你和小狗的圣诞愿望</span>
+                  <span class="page3_card-info-value" id="page3_wish"
+                    >我想在圣诞树上放一个小礼物，比如一个小的装饰物品或者是一个小的礼物。</span
+                  >
+                </div>
+              </div>
+              <div class="page3_card-footer">
+                <div class="page3_card-snowflake-decoration"></div>
+                <div class="page3_card-date">🎅 Merry Christmas 🎅</div>
+                <div class="page3_card-date">爵宴已经接收到你的愿望！</div>
+                <div class="page3_card-date">
+                  你是第121位许下愿望的狗狗家长～
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="page3_txt">
+            <img src="img/page3-txt5.png" crossorigin="anonymous" />
+            <span class="page3_info_num" id="page3_serial">25</span>
+            <!-- <img
+              src="img/page3-txt2.png"  
+              style="width: 30%; margin-right: auto; margin-left: 15%"
+            />
+            <div class="page3_num">150</div>
+            <img src="img/page3-txt3.png" style="width: 80%" /> -->
+          </div>
+
+          <!-- <img class="page3_snowman" src="img/page3-snowman.png" /> -->
+
+          <!-- <div class="page3_qr">
+            <img
+              src="img/logo-b-r-b.png"
+              style="width: 35%; margin-left: auto"
+            />
+          </div> -->
+
+          <!-- <div class="page3_txt">
+            <img src="img/page3-txt4.png" style="width: 45%" />
+          </div> -->
+        </div>
+        <!-- #endregion -->
+      </div>
+    </div>
+
+    <!-- #region mask&表单 -->
+    <div class="mask">
+      <div class="mark_form">
+        <!-- <img class="mark_form-img" src="img/MeatWay.webp" /> -->
+        <form action="" method="post">
+          <div class="mark_form_item">
+            <div class="mark_form_tit">
+              <img src="img/form-name.png" style="width: 35%" /><span></span>
+            </div>
+            <input type="text" name="name" id="name" />
+          </div>
+          <div style="clear: both"></div>
+          <div class="mark_form_item">
+            <div class="mark_form_tit">
+              <img src="img/form-tel.png" style="width: 60%" /><span></span>
+            </div>
+            <input type="text" name="tel" id="tel" />
+          </div>
+          <div class="mark_form_item">
+            <div class="mark_form_tit">
+              <img src="img/form-wish.png" style="width: 60%" /><span></span>
+            </div>
+            <!-- <input type="text" name="wish" id="wish" /> -->
+            <textarea name="wish" id="wish" rows="2"></textarea>
+          </div>
+          <a id="sub">
+            <img src="img/form-butt.png" />
+          </a>
+        </form>
+      </div>
+    </div>
+    <!-- #endregion -->
+  </body>
+</html>

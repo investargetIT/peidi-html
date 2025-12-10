@@ -1,0 +1,281 @@
+/* 圣诞节主题CSS - 覆盖默认样式 */
+/* 主题颜色变量 */
+:root {
+  --christmas-bg: #3e6e54;
+  --christmas-text: #f2e9d8;
+  --christmas-red: #d32f2f;
+  --christmas-gold: #ffd700;
+  --christmas-silver: #c0c0c0;
+  --christmas-dark-green: #2e593f;
+  --christmas-light-green: #5a8c6d;
+}
+
+/* 基础样式覆盖 */
+html {
+  background: linear-gradient(
+    135deg,
+    var(--christmas-bg) 0%,
+    var(--christmas-dark-green) 100%
+  );
+  color: var(--christmas-text);
+  font-family: "Microsoft YaHei", sans-serif;
+}
+
+body {
+  background: transparent;
+}
+
+/* 链接样式覆盖 */
+a {
+  color: var(--christmas-gold);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+a:hover {
+  color: var(--christmas-text);
+  text-decoration: underline;
+}
+
+/* 按钮样式覆盖 */
+button {
+  background: linear-gradient(
+    45deg,
+    var(--christmas-red),
+    var(--christmas-gold)
+  );
+  color: var(--christmas-text);
+  border: 2px solid var(--christmas-gold);
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+button:hover {
+  background: linear-gradient(
+    45deg,
+    var(--christmas-gold),
+    var(--christmas-red)
+  );
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* 表单元素样式覆盖 */
+input,
+textarea,
+select {
+  background: rgba(242, 233, 216, 0.1);
+  border: 2px solid var(--christmas-light-green);
+  color: var(--christmas-text);
+  backdrop-filter: blur(10px);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--christmas-gold);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.3);
+  background: rgba(242, 233, 216, 0.2);
+}
+
+/* 表格样式覆盖 */
+th {
+  background: linear-gradient(
+    45deg,
+    var(--christmas-dark-green),
+    var(--christmas-bg)
+  );
+  color: var(--christmas-gold);
+  border-bottom: 3px solid var(--christmas-gold);
+}
+
+td {
+  background: rgba(242, 233, 216, 0.05);
+  border-bottom: 1px solid var(--christmas-light-green);
+}
+
+/* 标题样式覆盖 */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--christmas-gold);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 215, 0, 0.1),
+    transparent
+  );
+  padding: 10px 20px;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+/* 圣诞主题专用类 */
+.christmas-card {
+  background: linear-gradient(
+    135deg,
+    rgba(62, 110, 84, 0.9),
+    rgba(46, 89, 63, 0.9)
+  );
+  border: 3px solid var(--christmas-gold);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.christmas-button {
+  background: linear-gradient(
+    45deg,
+    var(--christmas-red),
+    var(--christmas-gold)
+  );
+  color: var(--christmas-text);
+  border: 2px solid var(--christmas-gold);
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.christmas-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* 雪花效果 */
+.snowflakes {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.snowflake {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+/* 彩灯效果 */
+.christmas-lights {
+  position: relative;
+  padding: 20px 0;
+}
+
+.light-string {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.light-bulb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  animation: blink 2s infinite;
+  box-shadow: 0 0 10px currentColor;
+}
+
+.light-bulb:nth-child(odd) {
+  background: var(--christmas-red);
+  animation-delay: 0s;
+}
+
+.light-bulb:nth-child(even) {
+  background: var(--christmas-gold);
+  animation-delay: 1s;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* 圣诞树装饰 */
+.christmas-tree {
+  position: relative;
+  width: 200px;
+  height: 300px;
+  margin: 0 auto;
+}
+
+.tree-layer {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 100px solid var(--christmas-dark-green);
+}
+
+.tree-layer:nth-child(1) {
+  bottom: 0;
+}
+.tree-layer:nth-child(2) {
+  bottom: 60px;
+  transform: scale(0.8);
+}
+.tree-layer:nth-child(3) {
+  bottom: 120px;
+  transform: scale(0.6);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .christmas-card {
+    padding: 20px;
+    margin: 10px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    padding: 8px 16px;
+    font-size: 90%;
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .snowflakes,
+  .christmas-lights {
+    display: none;
+  }
+
+  .christmas-card {
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+}
