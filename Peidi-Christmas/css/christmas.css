@@ -10,6 +10,15 @@
   --christmas-light-green: #5a8c6d;
 }
 
+/* 自定义字体定义 */
+@font-face {
+  font-family: 'Jiangcheng Yuanti';
+  src: url('../font/jiangcheng-yuanti.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* 基础样式覆盖 */
 html {
   background: linear-gradient(
@@ -18,17 +27,19 @@ html {
     var(--christmas-dark-green) 100%
   );
   color: var(--christmas-text);
-  font-family: "Microsoft YaHei", sans-serif;
+  font-family: 'Jiangcheng Yuanti', "Microsoft YaHei", sans-serif;
 }
 
 body {
   background: transparent;
+  font-family: 'Jiangcheng Yuanti', "Microsoft YaHei", sans-serif;
 }
 
 /* 链接样式覆盖 */
 a {
   color: var(--christmas-gold);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-family: 'Jiangcheng Yuanti', "Microsoft YaHei", sans-serif;
 }
 
 a:hover {
@@ -48,6 +59,7 @@ button {
   font-weight: bold;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  font-family: 'Jiangcheng Yuanti', "Microsoft YaHei", sans-serif;
 }
 
 button:hover {
@@ -72,6 +84,7 @@ select {
   border: 2px solid var(--christmas-light-green);
   color: var(--christmas-text);
   backdrop-filter: blur(10px);
+  font-family: 'Jiangcheng Yuanti', "Microsoft YaHei", sans-serif;
 }
 
 input:focus,
@@ -91,11 +104,13 @@ th {
   );
   color: var(--christmas-gold);
   border-bottom: 3px solid var(--christmas-gold);
+  font-family: 'Jiangcheng Yuanti', "Microsoft YaHei", sans-serif;
 }
 
 td {
   background: rgba(242, 233, 216, 0.05);
   border-bottom: 1px solid var(--christmas-light-green);
+  font-family: 'Jiangcheng Yuanti', "Microsoft YaHei", sans-serif;
 }
 
 /* 标题样式覆盖 */
@@ -116,6 +131,7 @@ h6 {
   padding: 10px 20px;
   border-radius: 10px;
   display: inline-block;
+  font-family: 'Jiangcheng Yuanti', "Microsoft YaHei", sans-serif;
 }
 
 /* 圣诞主题专用类 */
@@ -130,6 +146,7 @@ h6 {
   padding: 30px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
+  font-family: 'Jiangcheng Yuanti', "Microsoft YaHei", sans-serif;
 }
 
 .christmas-button {
@@ -148,6 +165,7 @@ h6 {
   letter-spacing: 2px;
   transition: all 0.3s ease;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  font-family: 'Jiangcheng Yuanti', "Microsoft YaHei", sans-serif;
 }
 
 .christmas-button:hover {

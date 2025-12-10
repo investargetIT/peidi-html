@@ -1,5 +1,7 @@
 // 在文件顶部添加全局标志位 解决快速点击按钮多次滑动问题
 let isProcessing = false;
+
+//#region 弹幕数据相关
 const christmasSymbols = [
   "🎄",
   "🎁",
@@ -13,7 +15,7 @@ const christmasSymbols = [
   "🦴",
   "🍖"
 ];
-const commentList = [
+let commentList = [
   // "金毛寻回犬：希望圣诞老人给我一个超大的骨头玩具，可以啃一整天！",
   // "柯基犬：我想要一个会发出声音的球球，这样我就可以和主人一起玩了！",
   // "哈士奇：许愿每天都能去雪地里撒欢，雪是我的最爱！",
@@ -95,7 +97,8 @@ const commentList = [
   "希望能有专门的宠物主题公园",
   "许愿能有更多允许带宠物入住的民宿和酒店",
 ]
-let commentListTemp = [];
+// let commentListTemp = JSON.parse(JSON.stringify(processCommentList(commentList)));
+let commentListTemp = []
 // 处理并复制commentList函数
 function processCommentList(commentList) {
   return commentList.map(item => {
@@ -103,6 +106,26 @@ function processCommentList(commentList) {
   });
 }
 
+// 请求弹幕数据
+$.ajax({
+  url: `https://api.peidigroup.cn/ui/plant/christmas?pageNo=1&pageSize=50`,
+  type: 'GET',
+  success: function (response) {
+    console.log('弹幕GET请求成功:', response);
+    if (response.data?.records?.length > 0) {
+      commentList = response.data?.records.map(item => item.wish);
+      commentListTemp = JSON.parse(JSON.stringify(processCommentList(commentList)));
+    }
+  },
+  error: function (xhr, status, error) {
+    console.error('弹幕GET请求失败:', error);
+    // 即使GET请求失败也继续发送POST请求，避免影响用户体验
+    alert('获取弹幕数据失败，请刷新页面重试');
+  }
+});
+//#endregion
+
+// 愿望数据
 const wishForm = {
   name: "",
   tel: "",
@@ -110,6 +133,7 @@ const wishForm = {
   serial: "" // 第几位许愿的
 }
 
+//#region  通用工具类函数
 // XSS防护函数 - 将HTML转义为纯文本
 function escapeHtml(text) {
   if (typeof text !== 'string') return text;
@@ -122,6 +146,17 @@ function escapeHtml(text) {
 function setSafeText(element, text) {
   if (typeof text !== 'string') return;
   $(element).text(text); // 使用text()而不是html()来防止XSS
+}
+
+// 截取字符串拼接...
+function truncateString(str, maxLength) {
+  if (str.length <= maxLength) return str;
+  return str.substring(0, maxLength) + '...';
+}
+
+// 格式化数字 前面补0
+function formatNumber(num, length) {
+  return num.toString().padStart(length, '0');
 }
 
 // 监听长按方法
@@ -137,8 +172,9 @@ $.fn.longPress = function (fn) {
     }, false);
   }
 };
+//#endregion
 
-// 保存图片方法
+//#region  保存图片方法集合
 // var saveImgTimer = null;
 function saveImg() {
   // if (saveImgTimer) {
@@ -222,6 +258,7 @@ function saveCanvasToImgCross() {
     });
   });
 }
+
 // 替换HTML节点为Canvas元素 -Img跨域属性写在节点上 -转换为Base64
 function saveCanvasToImgImmediate() {
   const hbDOM = document.getElementById('hb');
@@ -250,6 +287,7 @@ function saveCanvasToImgImmediate() {
     alert('截图保存失败，请重试！');
   });
 }
+//#endregion
 
 $(function () {
   const winW = $(window).width();
@@ -423,8 +461,14 @@ $(function () {
         slideChangeTransitionEnd: function () {
           swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
           if (this.activeIndex == 1) {
-            danmu_manager.startPlaying();
-            startDanmuTimer();
+            // danmu_manager.startPlaying();
+            // startDanmuTimer();
+          }
+          if (this.activeIndex == 2) {
+            // danmu_manager.startPlaying();
+            // startDanmuTimer();
+            stopDanmuTimer();
+            danmu_manager.stopPlaying();
           }
         }
       }
@@ -452,7 +496,7 @@ $(function () {
     // 需要添加的样式
     const danmu_styles = {
       color: '#ff6b6b',
-      fontSize: '16px',
+      fontSize: '14px',
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
       padding: '6px 12px',
       borderRadius: '20px',
@@ -468,6 +512,7 @@ $(function () {
       plugin: {
         $createNode(danmaku) {
           danmaku.node.textContent = danmaku.data;
+          // console.log(danmaku.node);
         },
         $beforeMove(danmaku) {
           for (const key in danmu_styles) {
@@ -486,7 +531,8 @@ $(function () {
     });
     const page2_danmu_container = document.getElementById('page2_danmu');
     danmu_manager.mount(page2_danmu_container);
-    // danmu_manager.startPlaying();
+    danmu_manager.startPlaying();
+    startDanmuTimer()
 
     var page2_danmu_timer = null;
     // 开启弹幕定时器
@@ -498,7 +544,7 @@ $(function () {
         } else {
           commentListTemp = JSON.parse(JSON.stringify(processCommentList(commentList)));
         }
-      }, 1000 * 1);
+      }, 1000 * 0.5);
     }
     // 关闭弹幕定时器
     function stopDanmuTimer() {
@@ -576,12 +622,12 @@ $(function () {
           success: function (response) {
             console.log('GET请求成功，total值为:', response);
 
-            wishForm.serial = response.data?.total ?? 0;
+            wishForm.serial = 120 + response.data?.total ?? 0;
 
             // 安全地设置文本内容，使用text()而不是html()
             setSafeText('#page3_name', wishForm.name);
-            setSafeText('#page3_wish', wishForm.wish);
-            setSafeText('#page3_serial', String(wishForm.serial));
+            setSafeText('#page3_wish', truncateString(wishForm.wish, 50));
+            setSafeText('#page3_serial', formatNumber(wishForm.serial, 5));
 
             setTimeout(function () {
 
