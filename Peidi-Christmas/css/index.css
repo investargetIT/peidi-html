@@ -1,0 +1,902 @@
+/* #region 全局样式 */
+@media only screen and (min-width: 320px) and (max-width: 329px) {
+  html {
+    font-size: 14px !important;
+  }
+}
+@media only screen and (min-width: 330px) and (max-width: 351px) {
+  html {
+    font-size: 15px !important;
+  }
+}
+@media only screen and (min-width: 352px) and (max-width: 373px) {
+  html {
+    font-size: 16px !important;
+  }
+}
+@media only screen and (min-width: 374px) and (max-width: 395px) {
+  html {
+    font-size: 17px !important;
+  }
+}
+@media only screen and (min-width: 396px) and (max-width: 417px) {
+  html {
+    font-size: 18px !important;
+  }
+}
+@media only screen and (min-width: 418px) and (max-width: 439px) {
+  html {
+    font-size: 19px !important;
+  }
+}
+@media only screen and (min-width: 440px) and (max-width: 461px) {
+  html {
+    font-size: 20px !important;
+  }
+}
+@media only screen and (min-width: 462px) and (max-width: 483px) {
+  html {
+    font-size: 21px !important;
+  }
+}
+@media only screen and (min-width: 484px) and (max-width: 505px) {
+  html {
+    font-size: 22px !important;
+  }
+}
+@media only screen and (min-width: 506px) and (max-width: 527px) {
+  html {
+    font-size: 23px !important;
+  }
+}
+@media only screen and (min-width: 528px) and (max-width: 549px) {
+  html {
+    font-size: 24px !important;
+  }
+}
+@media only screen and (min-width: 550px) and (max-width: 571px) {
+  html {
+    font-size: 25px !important;
+  }
+}
+@media only screen and (min-width: 572px) and (max-width: 2000px) {
+  html {
+    font-size: 26px !important;
+  }
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+}
+img {
+  display: block;
+  width: 100%;
+}
+/* #endregion */
+
+/* #region 通用样式 */
+.po {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.mc {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  max-width: 500px;
+  /* background: url(../img/bg.jpg) no-repeat scroll top left; */
+  /* background-size: 100% 100%; */
+  opacity: 0;
+}
+
+/* 按键 */
+@-webkit-keyframes anjian {
+  0% {
+    -webkit-transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(0.9);
+  }
+  100% {
+    -webkit-transform: scale(1);
+  }
+}
+@keyframes anjian {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.anjian {
+  -webkit-animation: anjian linear 0.3s;
+  animation: anjian linear 0.3s;
+}
+/* #endregion */
+
+/* #region 音乐相关 common_music */
+.common_music-container {
+  width: 100%;
+  max-width: 500px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 5;
+  opacity: 0;
+}
+.common_music {
+  width: 10%;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.common_music.on {
+  animation: common_music_rotate 5s linear infinite;
+}
+
+@keyframes common_music_rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/* #endregion */
+
+/* #region 加载动画相关 common_loading */
+.common_loading {
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+  /* background: linear-gradient(
+    135deg,
+    var(--christmas-bg) 0%,
+    var(--christmas-dark-green) 100%
+  ); */
+
+  background: url(../img/page-bg.png) no-repeat scroll top left;
+  background-size: 100% 100%;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 9;
+  /* -webkit-animation: fadeOut 0.5s linear forwards;
+  animation: fadeOut 0.5s linear forwards;
+  -webkit-animation-delay: 5s;
+  animation-delay: 5s; */
+}
+.common_loading .common_loading-main {
+  width: 100%;
+  position: absolute;
+  top: 32%;
+  left: 0;
+  z-index: 2;
+}
+.common_loading .common_loading-img {
+  width: 35%;
+  margin: 0 auto;
+  position: relative;
+}
+.common_loading .common_loading-img img {
+  top: 40%;
+  left: -5%;
+  -webkit-animation: common_fade_in_out linear infinite 5s;
+  animation: common_fade_in_out linear infinite 5s;
+  -webkit-transform-origin: 50% 2%;
+  transform-origin: 50% 2%;
+}
+
+.common_loading .common_loading-num {
+  text-align: center;
+  margin: 10px auto 0;
+  color: #fff;
+  font-size: 18px;
+}
+
+@-webkit-keyframes common_fade_in_out {
+  0% {
+    opacity: 0.2;
+  }
+  25% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+@keyframes common_fade_in_out {
+  0% {
+    opacity: 0.2;
+  }
+  25% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+.common_fade_in_out {
+  -webkit-animation-name: common_fade_in_out;
+  animation-name: common_fade_in_out;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+}
+
+@-webkit-keyframes common_loading_yaobai {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  25% {
+    -webkit-transform: rotate(5deg);
+  }
+  50% {
+    -webkit-transform: rotate(0deg);
+  }
+  75% {
+    -webkit-transform: rotate(-5deg);
+  }
+  100% {
+    -webkit-transform: rotate(0deg);
+  }
+}
+@keyframes common_loading_yaobai {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(5deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+.common_loading_yaobai {
+  -webkit-animation-name: common_loading_yaobai;
+  animation-name: common_loading_yaobai;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+}
+/* #endregion */
+
+/* #region 场景下雪动效相关 page_snow */
+.page_snow {
+  width: 100%;
+  background: url(../img/page-snow.png) repeat-y scroll;
+  background-size: 100% 300px;
+  -webkit-animation: page_xiaxue linear 5s infinite;
+  animation: page_xiaxue linear 5s infinite;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.7;
+}
+
+@-webkit-keyframes page_xiaxue {
+  0% {
+  }
+  100% {
+    background-position: 0 300px;
+  }
+}
+@keyframes page_xiaxue {
+  0% {
+  }
+  100% {
+    background-position: 0 300px;
+  }
+}
+/* #endregion */
+
+/* #region 场景顶部挂坠相关 page_pendant */
+.page_pendant {
+  width: 100%;
+  background: url(../img/page-pendant.png) no-repeat scroll;
+  background-size: 100% 300px;
+  top: 0;
+  left: 0;
+  opacity: 0.7;
+}
+.page_pendant2 {
+  width: 100%;
+  background: url(../img/page-pendant2.png) no-repeat scroll;
+  background-size: 100% 300px;
+  top: 0;
+  left: 0;
+  opacity: 0.7;
+}
+.page_pendant3 {
+  width: 100%;
+  background: url(../img/page-pendant3.png) no-repeat scroll;
+  background-size: 100% 300px;
+  top: 0;
+  left: 0;
+  opacity: 0.7;
+}
+/* #endregion */
+
+/* #region 场景1 page1_ */
+.page1_curtain {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url(../img/page1-bg.png) no-repeat scroll top left;
+  background-size: 100% 100%;
+}
+.page1_snow {
+  height: 100%;
+}
+.page1_snow2 {
+  width: 6%;
+  position: absolute;
+  top: 13%;
+  left: 60%;
+  opacity: 0.47;
+  -webkit-animation: swingInfi 4s infinite;
+  animation: swingInfi 4s infinite;
+}
+.page1_snow3 {
+  width: 10%;
+  position: absolute;
+  top: 36%;
+  left: 9%;
+  opacity: 0.58;
+  -webkit-animation: swingInfi 4s infinite 2s;
+  animation: swingInfi 4s infinite 2s;
+}
+.page1_snow4 {
+  width: 17%;
+  position: absolute;
+  top: 43%;
+  right: 10%;
+  opacity: 0.73;
+  -webkit-animation: swingInfi 4s infinite -1s;
+  animation: swingInfi 4s infinite -1s;
+}
+.page1_pendant {
+  height: 100%;
+}
+.page1_txt {
+  width: 100%;
+  position: absolute;
+  top: 13%;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.page1_state {
+  width: 100%;
+  position: absolute;
+  top: 63%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+.page1_star1 {
+  width: 100%;
+  position: absolute;
+  top: 12%;
+  right: 0%;
+  opacity: 1;
+  -webkit-animation: common_fade_in_out linear infinite 3s;
+  animation: common_fade_in_out linear infinite 3s;
+  -webkit-transform-origin: 50% 2%;
+  transform-origin: 50% 2%;
+}
+/* #endregion */
+
+/* #region 场景2 page2_ */
+.page2_curtain {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url(../img/page2-bg.png) no-repeat scroll top left;
+  background-size: 100% 100%;
+}
+.page2_snow {
+  height: 100%;
+}
+.page2_pendant {
+  height: 100%;
+}
+.page2_sky {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.page2_star2 {
+  -webkit-transform-origin: 71% 28%;
+  transform-origin: 71% 28%;
+  opacity: 1;
+}
+.page2_star3 {
+  -webkit-transform-origin: 94% 64%;
+  transform-origin: 94% 64%;
+  opacity: 1;
+}
+.page2_star4 {
+  -webkit-transform-origin: 5% 92%;
+  transform-origin: 5% 92%;
+  opacity: 1;
+}
+.page2_logo {
+  width: 100%;
+  position: absolute;
+  top: 5%;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.page2_state {
+  width: 100%;
+  position: absolute;
+  top: 23%;
+  left: 0;
+}
+.page2_butt-container {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  -webkit-animation: common_loading_yaobai linear infinite 3s;
+  animation: common_loading_yaobai linear infinite 3s;
+  -webkit-transform-origin: 50% 2%;
+  transform-origin: 50% 2%;
+}
+.page2_butt {
+  width: 28%;
+  /* position: absolute;
+  top: 50%;
+  left: 0;
+  right: 15%;
+  margin: 0 auto; */
+  margin-left: 30%;
+}
+.page2_txt {
+  width: 100%;
+  position: absolute;
+  top: 90%;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.page2_danmu {
+  width: 100%;
+  height: 45%;
+  position: absolute;
+  top: 5%;
+  left: 0;
+}
+/* #endregion */
+
+/* #region 场景3 page3_ */
+.page3_curtain {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* background: url(../img/page3-bg.png) no-repeat scroll top left; */
+  /* background-size: 100% 100%; */
+}
+.page3_bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.page3_snow {
+  height: 100%;
+}
+.page3_pendant {
+  height: 100%;
+}
+.page3_logo {
+  width: 100%;
+  position: absolute;
+  top: 11%;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.page3_snowman {
+  width: 18%;
+  position: absolute;
+  top: 18%;
+  right: 9%;
+}
+.page3_txt {
+  width: 100%;
+  position: absolute;
+  top: 79%;
+  left: 0;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; */
+}
+.page3_txt img {
+  /* margin-bottom: 5px; */
+}
+.page3_info_num {
+  position: absolute;
+  top: -45%;
+  left: 18%;
+  color: #c2321f;
+  font-size: 2rem;
+  font-weight: 700;
+  /* transform: translateY(-25%); */
+}
+.page3_qr {
+  width: 100%;
+  position: absolute;
+  top: 88%;
+  left: 0;
+  padding-right: 2%;
+}
+.page3_card-bg-container {
+  width: 100%;
+  position: absolute;
+  top: 12%;
+  left: 0;
+}
+.page3_card-bg {
+  width: 70%;
+  margin: 0 auto;
+}
+.page3_card-greeting {
+  width: 100%;
+  position: absolute;
+  top: 32%;
+  left: 0;
+}
+.page3_card-greeting-item {
+  display: flex;
+  flex-direction: column;
+  width: 47%;
+  margin: 0 auto;
+  font-size: 0.9rem;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.page3_card-greeting-value {
+  text-decoration: underline dashed;
+}
+/* #endregion */
+
+/* #region 场景3 现代圣诞卡片样式 page3_card */
+.page3_card-container {
+  width: 100%;
+  position: absolute;
+  top: 22%;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.page3_card {
+  /* position: absolute;
+  top: 17%;
+  left: 0; */
+  /* transform: translate(-50%, -50%); */
+  width: 85%;
+  max-width: 320px;
+
+  /* background: linear-gradient(
+    135deg,
+    rgba(62, 110, 84, 0.95) 0%,
+    rgba(46, 89, 63, 0.95) 100%
+  ); */
+
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.1)
+    ),
+    url(../img/page3-card2.png) no-repeat center center;
+  background-size: 100% 100%;
+
+  border: 3px solid #f2e9d8;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 0 30px rgba(242, 233, 216, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  /* z-index: 10; */
+  animation: page3_card_float 6s ease-in-out infinite;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes page3_card_float {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateY(-5px) rotate(0.5deg);
+  }
+}
+
+/* .card-header {
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+  padding-bottom: 15px;
+} */
+
+/* .card-icon {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+} */
+
+/* .card-title {
+  color: #ffd700;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: 1px;
+} */
+
+.page3_card-content {
+  margin-bottom: 20px;
+}
+
+.page3_card-info-item {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.page3_card-info-label {
+  color: #f2e9d8;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5px;
+}
+
+.page3_card-info-value {
+  color: #f2e9d8;
+  font-size: 1rem;
+  line-height: 1.4;
+  background: rgba(242, 233, 216, 0.1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border-left: 3px solid #f2e9d8;
+  backdrop-filter: blur(5px);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.page3_card-footer {
+  text-align: center;
+  border-top: 2px solid rgba(242, 233, 216, 0.3);
+  padding-top: 15px;
+  position: relative;
+}
+
+.page3_card-snowflake-decoration {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 16px;
+  background: #f2e9d8;
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+  box-shadow: 0 0 10px #f2e9d8;
+}
+
+.page3_card-date {
+  color: #f2e9d8;
+  font-size: 1rem;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: 1px;
+}
+
+/* 卡片悬停效果 */
+/* .page3_card:hover {
+  transform: translate(-50%, -50%) scale(1.02);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4), 0 0 40px rgba(255, 215, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+} */
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+  .page3_card {
+    width: 90%;
+    padding: 20px;
+  }
+
+  /* .card-title {
+    font-size: 1.2rem;
+  } */
+
+  .page3_card-info-value {
+    font-size: 0.9rem;
+  }
+}
+
+/* 卡片进入动画 */
+.page3_card {
+  animation: cardEntrance 0.8s ease-out;
+}
+
+@keyframes cardEntrance {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8) rotate(-5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+}
+/* #endregion */
+
+/* #region 场景3  许愿数字特效 page3_num */
+.page3_num {
+  font-size: 3.2rem;
+  font-weight: bold;
+  color: #ffd700;
+  text-align: center;
+  margin: 15px 0;
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: rgba(62, 110, 84, 0.9);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  display: inline-block;
+  position: relative;
+  font-family: "Microsoft YaHei", sans-serif;
+  letter-spacing: 1px;
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+  .page3_num {
+    font-size: 2.6rem;
+    padding: 6px 12px;
+    margin: 12px 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .page3_num {
+    font-size: 2.2rem;
+    padding: 5px 10px;
+  }
+}
+/* #endregion */
+
+/* #region mask表单 mask_ */
+.mask {
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  /* background-color: rgba(0, 0, 0, 0.8); */
+  display: none;
+  z-index: 3;
+  background: url(../img/mask-bg.png) no-repeat scroll top left;
+  background-size: 100% 100%;
+}
+.mask .mark_form {
+  width: 100%;
+  position: absolute;
+  top: 38%;
+}
+.mark_form-img {
+  width: 35%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+.mark_form .mark_form_item {
+  width: 58%;
+  /* height: 25px; */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin-bottom: 0;
+}
+.mark_form .mark_form_item .mark_form_tit {
+  width: 100%;
+  height: 100%;
+  /* float: left; */
+}
+.mark_form .mark_form_item .mark_form_tit img {
+  display: inline;
+  vertical-align: middle;
+}
+.mark_form .mark_form_item .mark_form_tit span {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+.mark_form .mark_form_item input,
+.mark_form .mark_form_item textarea {
+  width: 100%;
+  /* float: right; */
+  height: 100%;
+  /* margin: 0 0 0 5%; */
+  padding: 2px 10px;
+  box-sizing: border-box;
+  border: none;
+  background-color: #fff;
+  color: #0a0a0a;
+}
+#sub {
+  width: 35%;
+  display: block;
+  margin: 24px auto 0;
+}
+/* #endregion */
