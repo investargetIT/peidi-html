@@ -333,15 +333,17 @@ function saveCanvasToImgImmediate() {
   });
 }
 
-// 替换HTML节点为Canvas元素 -Img跨域属性写在节点上 -转换为Base64 -使用SnapDom插件
+// 替换HTML节点为Canvas元素 -Img跨域属性写在节点上 -转换为Base64 -使用SnapDom插件 
+// TODO: 现在用来对华为做特殊处理，目前只有华为有问题，如果后续有新手机问题，把处理逻辑抽离出来
 async function saveCanvasToImgImmediateSnapDom() {
   const hbDOM = document.getElementById('hb');
   // const hbImgs = hbDOM.querySelectorAll('img');
   const hbSerial = hbDOM.querySelector('#page3_serial');
-  hbSerial.style.fontSize = '2.1rem';
+  hbSerial.style.fontSize = '2.35rem';
+  // hbSerial.style.marginBottom = '7%';
   // hbSerial.style.top = '-120%';
-  const hbSerialContainer = hbDOM.querySelector('.page3_info_num-container');
-  hbSerialContainer.style.top = '77%';
+  // const hbSerialContainer = hbDOM.querySelector('.page3_info_num-container');
+  // hbSerialContainer.style.top = '77%';
   const hbName = hbDOM.querySelector('#page3_name');
   hbName.style.fontSize = '1.1rem';
   const hbWish = hbDOM.querySelector('#page3_wish');
@@ -596,7 +598,7 @@ $(function () {
     // 需要添加的样式
     const danmu_styles = {
       color: '#ffffffc5',
-      fontSize: '0.75rem',
+      fontSize: '0.8rem',
       // 添加iOS特定样式防止字体自动调整
       '-webkit-text-size-adjust': 'none',
       'text-size-adjust': 'none',

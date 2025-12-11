@@ -1,5 +1,5 @@
 /* #region 全局样式 */
-@media only screen and (min-width: 320px) and (max-width: 329px) {
+/* @media only screen and (min-width: 320px) and (max-width: 329px) {
   html {
     font-size: 14px !important;
   }
@@ -62,6 +62,42 @@
 @media only screen and (min-width: 572px) and (max-width: 2000px) {
   html {
     font-size: 26px !important;
+  }
+} */
+
+/* 基础字体大小设置 */
+html {
+  font-size: 16px; /* 默认字体大小 */
+}
+
+/* 使用更简洁的媒体查询适配 */
+@media only screen and (max-width: 374px) {
+  html {
+    font-size: 14px !important; /* 小屏幕设备 */
+  }
+}
+
+@media only screen and (min-width: 375px) and (max-width: 413px) {
+  html {
+    font-size: 16px !important; /* 中等屏幕设备（包括大部分手机） */
+  }
+}
+
+@media only screen and (min-width: 414px) and (max-width: 767px) {
+  html {
+    font-size: 18px !important; /* 大屏手机（如华为Mate系列） */
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  html {
+    font-size: 20px !important; /* 平板设备 */
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  html {
+    font-size: 22px !important; /* 桌面设备 */
   }
 }
 
@@ -597,15 +633,22 @@ img {
 .page3_txt {
   width: 100%;
   position: absolute;
-  top: 79%;
+  top: 77%;
   left: 0;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; */
+  display: flex;
+  /* flex-direction: column; */
+  /* justify-content: center; */
+  justify-content: space-between;
+  align-items: center;
 }
 .page3_txt img {
-  /* margin-bottom: 5px; */
+  /* height: 1.2rem; */
+}
+.page3_img_txt6 {
+  width: 16%;
+}
+.page3_img_txt7 {
+  width: 50%;
 }
 .page3_info_num-container {
   width: 100%;
@@ -614,13 +657,14 @@ img {
   left: 0;
 }
 .page3_info_num {
-  position: absolute;
-  top: 0;
-  left: 18%;
+  /* position: absolute; */
+  /* top: 0; */
+  /* left: 18%; */
   color: #c2321f;
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 700;
-  float: left;
+  /* margin-bottom: 0.6rem; */
+  /* float: left; */
   /* margin-left: 19vw;
   margin-top: -10%; */
   /* transform: translateY(-25%); */

@@ -302,6 +302,7 @@ em {
 }
 
 /* 媒体查询 - 响应式断点 */
+/* 不要动html的font-size 一律到index.css */
 @media (max-width: 1200px) {
   .container {
     max-width: 1140px;
@@ -331,7 +332,7 @@ em {
   }
 
   html {
-    font-size: 14px;
+    /* font-size: 14px; */
   }
 
   .row {
@@ -352,7 +353,7 @@ em {
   }
 
   html {
-    font-size: 12px;
+    /* font-size: 12px; */
   }
 
   h1 {
