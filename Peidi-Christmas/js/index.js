@@ -495,12 +495,12 @@ $(function () {
     //#region 场景2 弹幕逻辑 page2_danmu
     // 需要添加的样式
     const danmu_styles = {
-      color: '#ff6b6b',
+      color: '#ffffffc5',
       fontSize: '14px',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      backgroundColor: 'rgba(0, 0, 0, 0.3)',
       padding: '6px 12px',
       borderRadius: '20px',
-      border: '2px solid #ff6b6b',
+      border: '2px solid #ffffff50',
       textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)',
       fontWeight: 'bold',
       boxShadow: '0 3px 10px rgba(0, 0, 0, 0.2)',
@@ -560,6 +560,7 @@ $(function () {
 
       isProcessing = true;
       $(this).addClass('anjian');
+      // $('.mark_form').height($('.mark_card').height());
       setTimeout(function () {
         $('.page2').removeClass('anjian');
         $('.mask').fadeIn();

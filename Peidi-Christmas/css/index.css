@@ -507,7 +507,7 @@ img {
   margin: 0 auto; */
   margin-left: 29%;
 }
-.page2_txt {
+.page2_txt1 {
   width: 100%;
   position: absolute;
   top: 0;
@@ -516,6 +516,12 @@ img {
   flex-direction: column;
   justify-content: center;
   align-items: center; */
+}
+.page2_txt2 {
+  width: 100%;
+  position: absolute;
+  top: 74%;
+  left: 0;
 }
 .page2_danmu {
   width: 100%;
@@ -626,7 +632,6 @@ img {
   font-size: 0.85rem;
   font-weight: 700;
   text-align: center;
-
 }
 /* #endregion */
 
@@ -883,21 +888,42 @@ img {
   -webkit-transform-origin: 50% 2%;
   transform-origin: 50% 2%;
 }
-.mark_card {
+.mark_card1 {
   width: 100%;
   position: absolute;
   top: 0;
-  right: 0;
+  left: 0;
+}
+.mark_card2 {
+  float: left;
+}
+.mark_txt1 {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.mark_txt2 {
+  width: 100%;
+  position: absolute;
+  top: 74%;
+  left: 0;
 }
 .mask .mark_form {
   width: 100%;
   position: absolute;
-  top: 35%;
+  top: 16%;
+  height: auto;
 }
 .mark_form-img {
   width: 35%;
   margin: 0 auto;
   margin-bottom: 20px;
+}
+.mark_form_content {
+  position: absolute;
+  top: 35%;
+  left: 0;
 }
 .mark_form .mark_form_item {
   width: 58%;
