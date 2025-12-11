@@ -172,6 +172,41 @@ $.fn.longPress = function (fn) {
     }, false);
   }
 };
+
+//判断访问终端
+const browser = {
+  versions: function () {
+    const u = navigator.userAgent, app = navigator.appVersion;
+    return {
+      trident: u.indexOf('Trident') > -1, // IE内核
+      presto: u.indexOf('Presto') > -1, // opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, // 苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1,// 火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), // 是否为移动终端
+      ios: !!u.match(/\(i[^;]+;\( U;\)\? CPU.+Mac OS X\)/), // ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1, // android终端
+      iPhone: u.indexOf('iPhone') > -1, // 是否为iPhone或者QQHD浏览器
+      iPad: u.indexOf('iPad') > -1, // 是否iPad
+      webApp: u.indexOf('Safari') == -1, // 是否web应该程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') > -1, // 是否微信 （2015-01-22新增）
+      qq: u.match(/sQQ/i) == " qq", // 是否QQ
+      isHuawei: u.toLowerCase().indexOf('huawei') > -1, // 是否华为
+    };
+  }(),
+  language: (navigator.browserLanguage || navigator.language).toLowerCase()
+}
+
+//判断机型方法类
+class DeviceType {
+  // 是否是IOS系统
+  static isIOS() {
+    return !!navigator.userAgent.match(/\(i[^;]+;\( U;\)\? CPU.+Mac OS X\)/);
+  }
+  // 是否是Safari浏览器
+  static isSafari() {
+    return /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent) > -1
+  }
+}
 //#endregion
 
 //#region  保存图片方法集合
@@ -264,7 +299,12 @@ function saveCanvasToImgImmediate() {
   const hbDOM = document.getElementById('hb');
   const hbImgs = hbDOM.querySelectorAll('img');
   const hbSerial = hbDOM.querySelector('#page3_serial');
-  hbSerial.style.top = '-120%';
+  // hbSerial.style.top = '-120%';
+
+  // 动态添加样式，解决文字偏移问题
+  // const style = document.createElement('style') // 创建一个 <style> 元素
+  // document.head.appendChild(style) // 将 <style> 添加到 <head>
+  // style.sheet?.insertRule('body > div:last-child img { display: inline-block; }') // 添加 CSS 规则
 
   html2canvas(hbDOM, {
     useCORS: true,
@@ -275,17 +315,77 @@ function saveCanvasToImgImmediate() {
   }).then(function (canvas) {
     $('canvas').remove();
     // 替换HTML节点为Canvas元素
-    hbDOM.innerHTML = '';
     // hbDOM.appendChild(canvas);
     // 插入Base64图片
     const imgUrl = canvas.toDataURL("image/png");
     const img = document.createElement('img');
     img.src = imgUrl;
+    img.style.position = 'absolute';
+    img.style.top = '0';
+    img.style.left = '0';
+    //hbDOM的所有节点替换为img
+    // hbDOM.replaceChild(img, hbDOM.firstChild);
+    // hbDOM.innerHTML = '';
     hbDOM.appendChild(img);
   }).catch(function (error) {
     console.error('截图失败:', error);
     alert('截图保存失败，请重试！');
   });
+}
+
+// 替换HTML节点为Canvas元素 -Img跨域属性写在节点上 -转换为Base64 -使用SnapDom插件
+async function saveCanvasToImgImmediateSnapDom() {
+  const hbDOM = document.getElementById('hb');
+  // const hbImgs = hbDOM.querySelectorAll('img');
+  const hbSerial = hbDOM.querySelector('#page3_serial');
+  hbSerial.style.fontSize = '2.1rem';
+  // hbSerial.style.top = '-120%';
+  const hbSerialContainer = hbDOM.querySelector('.page3_info_num-container');
+  hbSerialContainer.style.top = '77%';
+  const hbName = hbDOM.querySelector('#page3_name');
+  hbName.style.fontSize = '1.1rem';
+  const hbWish = hbDOM.querySelector('#page3_wish');
+  hbWish.style.fontSize = '1.1rem';
+
+  // 最简单的使用方式
+  const image = await snapdom.toPng(hbDOM);
+
+  image.style.position = 'absolute';
+  image.style.top = '0';
+  image.style.left = '0';
+
+  // 显示在页面上
+  // console.log(image);
+  // hbDOM.innerHTML = '';
+  hbDOM.appendChild(image);
+
+  // snapdom.toPng(hbDOM, {
+  //   useProxy: true // enables built-in CORS proxy fallback (optional)
+  // }).then(img => {
+  //   console.log(hbDOM, img);
+  //   // hbDOM.innerHTML = '';
+  //   hbDOM.appendChild(img);
+  // });
+  // html2canvas(hbDOM, {
+  //   useCORS: true,
+  //   allowTaint: false,  // 改为false，因为我们已经设置了crossorigin
+  //   scale: 2,
+  //   logging: false,
+  //   backgroundColor: null
+  // }).then(function (canvas) {
+  //   $('canvas').remove();
+  //   // 替换HTML节点为Canvas元素
+  //   hbDOM.innerHTML = '';
+  //   // hbDOM.appendChild(canvas);
+  //   // 插入Base64图片
+  //   const imgUrl = canvas.toDataURL("image/png");
+  //   const img = document.createElement('img');
+  //   img.src = imgUrl;
+  //   hbDOM.appendChild(img);
+  // }).catch(function (error) {
+  //   console.error('截图失败:', error);
+  //   alert('截图保存失败，请重试！');
+  // });
 }
 //#endregion
 
@@ -496,23 +596,55 @@ $(function () {
     // 需要添加的样式
     const danmu_styles = {
       color: '#ffffffc5',
-      fontSize: '14px',
-      backgroundColor: 'rgba(0, 0, 0, 0.3)',
+      fontSize: '0.75rem',
+      // 添加iOS特定样式防止字体自动调整
+      '-webkit-text-size-adjust': 'none',
+      'text-size-adjust': 'none',
+      // 确保文本不会换行
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      // 设置最大宽度
+      maxWidth: '100%',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
       padding: '6px 12px',
       borderRadius: '20px',
       border: '2px solid #ffffff50',
       textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)',
       fontWeight: 'bold',
       boxShadow: '0 3px 10px rgba(0, 0, 0, 0.2)',
-      lineHeight: '1.4',
-      whiteSpace: 'nowrap'
+      lineHeight: '1.4'
+
+      // color: '#ffffffc5',
+      // fontSize: '0.75rem',
+      // backgroundColor: 'rgba(0, 0, 0, 0.3)',
+      // padding: '6px 12px',
+      // borderRadius: '20px',
+      // border: '2px solid #ffffff50',
+      // textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)',
+      // fontWeight: 'bold',
+      // boxShadow: '0 3px 10px rgba(0, 0, 0, 0.2)',
+      // lineHeight: '1.4',
+      // whiteSpace: 'nowrap'
     };
     var danmu_manager = Danmu.create({
       speed: 0.1,
       plugin: {
         $createNode(danmaku) {
-          danmaku.node.textContent = danmaku.data;
+          // danmaku.node.textContent = danmaku.data;
           // console.log(danmaku.node);
+
+          // 处理长文本，确保不会导致字体变化
+          let text = danmaku.data;
+          // 如果文本过长，进行截断处理
+          if (text.length > 50) {
+            text = text.substring(0, 47) + '...';
+          }
+          danmaku.node.textContent = text;
+          // 强制设置字体大小
+          danmaku.node.style.fontSize = '0.75rem';
+          danmaku.node.style.webkitTextSizeAdjust = 'none';
+          danmaku.node.style.textSizeAdjust = 'none';
         },
         $beforeMove(danmaku) {
           for (const key in danmu_styles) {
@@ -626,8 +758,8 @@ $(function () {
             wishForm.serial = 120 + response.data?.total ?? 0;
 
             // 安全地设置文本内容，使用text()而不是html()
-            setSafeText('#page3_name', wishForm.name);
-            setSafeText('#page3_wish', truncateString(wishForm.wish, 50));
+            setSafeText('#page3_name', truncateString(wishForm.name, 8));
+            setSafeText('#page3_wish', truncateString(wishForm.wish, 25));
             setSafeText('#page3_serial', formatNumber(wishForm.serial, 5));
 
             setTimeout(function () {
@@ -637,7 +769,25 @@ $(function () {
               mc.slideNext();
               mc.allowTouchMove = false;
 
-              saveCanvasToImgImmediate();
+              if (browser.versions.isHuawei) {
+                // alert('华为手机');
+                setTimeout(() => {
+                  saveCanvasToImgImmediateSnapDom();
+                }, 800);
+              } else {
+                saveCanvasToImgImmediate();
+              }
+
+
+              // if (DeviceType.isIOS() || DeviceType.isSafari() || browser.versions.iPhone || browser.versions.iPad) {
+              //   saveCanvasToImgImmediate();
+              // } else {
+              //   setTimeout(() => {
+              //     saveCanvasToImgImmediateSnapDom();
+              //   }, 800);
+              // }
+
+              // saveCanvasToImgImmediate();
               // $('#hb').longPress(() => {
               //   saveImg();
               // });

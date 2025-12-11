@@ -529,10 +529,33 @@ img {
   position: absolute;
   top: 5%;
   left: 0;
+  /* 防止iOS文本自动调整 */
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+/* iOS Safari特定样式 */
+@supports (-webkit-touch-callout: none) {
+  .page2_danmu {
+    /* 禁用iOS的文本自动调整 */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  /* 弹幕元素在iOS上的优化 */
+  .page2_danmu * {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    max-height: none;
+  }
 }
 /* #endregion */
 
 /* #region 场景3 page3_ */
+.page3_loading {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+}
 .page3_curtain {
   width: 100%;
   height: 100%;
@@ -584,13 +607,22 @@ img {
 .page3_txt img {
   /* margin-bottom: 5px; */
 }
+.page3_info_num-container {
+  width: 100%;
+  position: absolute;
+  top: 76.5%;
+  left: 0;
+}
 .page3_info_num {
   position: absolute;
-  top: -45%;
+  top: 0;
   left: 18%;
   color: #c2321f;
   font-size: 2rem;
   font-weight: 700;
+  float: left;
+  /* margin-left: 19vw;
+  margin-top: -10%; */
   /* transform: translateY(-25%); */
 }
 .page3_qr {
@@ -613,7 +645,7 @@ img {
 .page3_card-greeting {
   width: 100%;
   position: absolute;
-  top: 32%;
+  top: 33%;
   left: 0;
 }
 .page3_card-greeting-item {
@@ -621,7 +653,7 @@ img {
   flex-direction: column;
   width: 42%;
   /* margin: 0 auto; */
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: #fff;
   margin-left: 27%;
   margin-bottom: 6px;
@@ -629,9 +661,16 @@ img {
 .page3_card-greeting-value {
   text-decoration: underline dashed;
   /* border-bottom: 1px dashed #fff; */
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 700;
   text-align: center;
+}
+#page3_name {
+  /* 不换行 */
+  white-space: nowrap;
+  /* 超出部分省略号 */
+  /* overflow: hidden; */
+  /* text-overflow: ellipsis; */
 }
 /* #endregion */
 
