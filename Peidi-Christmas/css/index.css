@@ -1,5 +1,5 @@
 /* #region 全局样式 */
-@media only screen and (min-width: 320px) and (max-width: 329px) {
+/* @media only screen and (min-width: 320px) and (max-width: 329px) {
   html {
     font-size: 14px !important;
   }
@@ -62,6 +62,42 @@
 @media only screen and (min-width: 572px) and (max-width: 2000px) {
   html {
     font-size: 26px !important;
+  }
+} */
+
+/* 基础字体大小设置 */
+html {
+  font-size: 16px; /* 默认字体大小 */
+}
+
+/* 使用更简洁的媒体查询适配 */
+@media only screen and (max-width: 374px) {
+  html {
+    font-size: 14px !important; /* 小屏幕设备 */
+  }
+}
+
+@media only screen and (min-width: 375px) and (max-width: 413px) {
+  html {
+    font-size: 16px !important; /* 中等屏幕设备（包括大部分手机） */
+  }
+}
+
+@media only screen and (min-width: 414px) and (max-width: 767px) {
+  html {
+    font-size: 18px !important; /* 大屏手机（如华为Mate系列） */
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  html {
+    font-size: 20px !important; /* 平板设备 */
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  html {
+    font-size: 22px !important; /* 桌面设备 */
   }
 }
 
@@ -179,6 +215,20 @@ img {
   animation: fadeOut 0.5s linear forwards;
   -webkit-animation-delay: 5s;
   animation-delay: 5s; */
+}
+.common_loading-snow {
+  height: 100%;
+}
+.common_loading-start1 {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 1;
+  -webkit-animation: common_fade_in_out linear infinite 3s;
+  animation: common_fade_in_out linear infinite 3s;
+  -webkit-transform-origin: 50% 2%;
+  transform-origin: 50% 2%;
 }
 .common_loading .common_loading-main {
   width: 100%;
@@ -471,13 +521,13 @@ img {
 .page2_state {
   width: 100%;
   position: absolute;
-  top: 23%;
+  top: 0%;
   left: 0;
 }
 .page2_butt-container {
   width: 100%;
   position: absolute;
-  top: 50%;
+  top: 49%;
   left: 0;
   -webkit-animation: common_loading_yaobai linear infinite 3s;
   animation: common_loading_yaobai linear infinite 3s;
@@ -485,34 +535,63 @@ img {
   transform-origin: 50% 2%;
 }
 .page2_butt {
-  width: 28%;
+  width: 27%;
   /* position: absolute;
   top: 50%;
   left: 0;
   right: 15%;
   margin: 0 auto; */
-  margin-left: 30%;
+  margin-left: 29%;
 }
-.page2_txt {
+.page2_txt1 {
   width: 100%;
   position: absolute;
-  top: 90%;
+  top: 0;
   left: 0;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
+}
+.page2_txt2 {
+  width: 100%;
+  position: absolute;
+  top: 74%;
+  left: 0;
 }
 .page2_danmu {
   width: 100%;
-  height: 45%;
+  height: 35%;
   position: absolute;
   top: 5%;
   left: 0;
+  /* 防止iOS文本自动调整 */
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+/* iOS Safari特定样式 */
+@supports (-webkit-touch-callout: none) {
+  .page2_danmu {
+    /* 禁用iOS的文本自动调整 */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  /* 弹幕元素在iOS上的优化 */
+  .page2_danmu * {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    max-height: none;
+  }
 }
 /* #endregion */
 
 /* #region 场景3 page3_ */
+.page3_loading {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+}
 .page3_curtain {
   width: 100%;
   height: 100%;
@@ -554,23 +633,40 @@ img {
 .page3_txt {
   width: 100%;
   position: absolute;
-  top: 79%;
+  top: 77%;
   left: 0;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; */
+  display: flex;
+  /* flex-direction: column; */
+  /* justify-content: center; */
+  justify-content: space-between;
+  align-items: center;
 }
 .page3_txt img {
-  /* margin-bottom: 5px; */
+  /* height: 1.2rem; */
+}
+.page3_img_txt6 {
+  width: 16%;
+}
+.page3_img_txt7 {
+  width: 50%;
+}
+.page3_info_num-container {
+  width: 100%;
+  position: absolute;
+  top: 76.5%;
+  left: 0;
 }
 .page3_info_num {
-  position: absolute;
-  top: -45%;
-  left: 18%;
+  /* position: absolute; */
+  /* top: 0; */
+  /* left: 18%; */
   color: #c2321f;
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 700;
+  /* margin-bottom: 0.6rem; */
+  /* float: left; */
+  /* margin-left: 19vw;
+  margin-top: -10%; */
   /* transform: translateY(-25%); */
 }
 .page3_qr {
@@ -593,20 +689,32 @@ img {
 .page3_card-greeting {
   width: 100%;
   position: absolute;
-  top: 32%;
+  top: 33%;
   left: 0;
 }
 .page3_card-greeting-item {
   display: flex;
   flex-direction: column;
-  width: 47%;
-  margin: 0 auto;
-  font-size: 0.9rem;
+  width: 42%;
+  /* margin: 0 auto; */
+  font-size: 0.75rem;
   color: #fff;
-  margin-bottom: 10px;
+  margin-left: 27%;
+  margin-bottom: 6px;
 }
 .page3_card-greeting-value {
   text-decoration: underline dashed;
+  /* border-bottom: 1px dashed #fff; */
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+}
+#page3_name {
+  /* 不换行 */
+  white-space: nowrap;
+  /* 超出部分省略号 */
+  /* overflow: hidden; */
+  /* text-overflow: ellipsis; */
 }
 /* #endregion */
 
@@ -849,15 +957,56 @@ img {
   background: url(../img/mask-bg.png) no-repeat scroll top left;
   background-size: 100% 100%;
 }
+.mask_snow {
+  height: 100%;
+}
+.mark_start1 {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 1;
+  -webkit-animation: common_fade_in_out linear infinite 3s;
+  animation: common_fade_in_out linear infinite 3s;
+  -webkit-transform-origin: 50% 2%;
+  transform-origin: 50% 2%;
+}
+.mark_card1 {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.mark_card2 {
+  float: left;
+}
+.mark_txt1 {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.mark_txt2 {
+  width: 100%;
+  position: absolute;
+  top: 74%;
+  left: 0;
+}
 .mask .mark_form {
   width: 100%;
   position: absolute;
-  top: 38%;
+  top: 16%;
+  height: auto;
 }
 .mark_form-img {
   width: 35%;
   margin: 0 auto;
   margin-bottom: 20px;
+}
+.mark_form_content {
+  position: absolute;
+  top: 35%;
+  left: 0;
 }
 .mark_form .mark_form_item {
   width: 58%;
@@ -897,6 +1046,6 @@ img {
 #sub {
   width: 35%;
   display: block;
-  margin: 24px auto 0;
+  margin: 15px auto 0;
 }
 /* #endregion */

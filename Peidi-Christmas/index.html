@@ -2,10 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
+    <!-- <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"
+    /> -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
+
     <meta content="telephone=no" name="format-detection" />
     <meta name="description" content="爵宴圣诞活动许愿H5" />
     <meta name="keywords" content="爵宴, MeatyWay, 圣诞, 许愿" />
@@ -29,7 +34,7 @@
       charset="utf-8"
     ></script>
     <script
-      src="plugin/html2canvas/html2canvas.min.js"
+      src="plugin/html2canvas/v1.0.0/html2canvas.min.js"
       type="text/javascript"
       charset="utf-8"
     ></script>
@@ -38,6 +43,13 @@
       type="text/javascript"
       charset="utf-8"
     ></script>
+    <script
+      src="plugin/snapdom/snapdom.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <!-- <script src="https://unpkg.com/@zumer/snapdom/dist/snapdom.js"></script> -->
+    <!-- <script src="https://unpkg.com/@zumer/snapdom@1.9.3/dist/snapdom.js"></script> -->
     <script src="js/index.js" type="text/javascript" charset="utf-8"></script>
     <script
       src="plugin/swiper/1.0.2/swiper.min.js"
@@ -75,6 +87,9 @@
 
     <!-- #region 加载动画 common_loading -->
     <div class="common_loading">
+      <div class="page_snow common_loading-snow"></div>
+      <img class="common_loading-start1" src="img/loading-star1.png" />
+
       <div class="common_loading-main">
         <div class="common_loading-img">
           <!-- <img src="img/loading-bg.png" /> -->
@@ -109,10 +124,10 @@
           </div> -->
 
           <div
-            class="page1_state ani"
-            swiper-animate-effect="fadeIn"
-            swiper-animate-duration="1s"
-            swiper-animate-delay="1s"
+            class="page1_state ani infinite"
+            swiper-animate-effect="pulse"
+            swiper-animate-duration="4s"
+            swiper-animate-delay="0s"
           >
             <img class="page1_butt" src="img/page1-butt.png" />
           </div>
@@ -159,9 +174,13 @@
             <img class="po" src="img/page2-tree.png" />
           </div>
 
-          <!-- <div class="page2_txt">
-            <img src="img/page2-txt1.png" />
-          </div> -->
+          <div class="page2_txt1">
+            <img src="img/page2-txt3.png" />
+          </div>
+
+          <div class="page2_txt2">
+            <img src="img/page2-txt4.png" />
+          </div>
 
           <div class="page2_butt-container">
             <img class="page2_butt" src="img/page2-butt.png" />
@@ -170,44 +189,47 @@
         <!-- #endregion -->
         <!-- #region 场景3 -->
         <div class="swiper-slide con3" id="hb">
-          <div class="page3_curtain">
-            <!-- crossorigin="anonymous" -->
-            <img
-              class="page3_bg"
-              src="img/page3-bg.png"
-              crossorigin="anonymous"
-            />
-          </div>
-          <!-- <div class="page_snow page3_snow"></div> -->
-          <!-- <div class="page_pendant3 page3_pendant"></div> -->
+          <div>
+            <div class="page3_curtain">
+              <!-- crossorigin="anonymous" -->
+              <img
+                class="page3_bg"
+                src="img/page3-bg.png"
+                crossorigin="anonymous"
+              />
+            </div>
+            <!-- <div class="page_snow page3_snow"></div> -->
+            <!-- <div class="page_pendant3 page3_pendant"></div> -->
 
-          <!-- <div class="page3_logo">
+            <!-- <div class="page3_logo">
             <img src="img/MeatWay.webp" style="width: 36%" />
           </div> -->
-          <div class="page3_card-bg-container">
-            <img
-              class="page3_card-bg"
-              src="img/page3-card3.png"
-              crossorigin="anonymous"
-            />
-          </div>
-
-          <div class="page3_card-greeting">
-            <div class="page3_card-greeting-item">
-              <span class="page3_card-greeting-label">狗狗的名字</span>
-              <span class="page3_card-greeting-value" id="page3_name"
-                >小贝</span
-              >
+            <div class="page3_card-bg-container">
+              <img
+                class="page3_card-bg"
+                src="img/page3-card3.png"
+                crossorigin="anonymous"
+              />
             </div>
-            <div class="page3_card-greeting-item">
-              <span class="page3_card-greeting-label">你和小狗的圣诞愿望</span>
-              <span class="page3_card-greeting-value" id="page3_wish"
-                >想要爵宴风干粮春节大礼包</span
-              >
-            </div>
-          </div>
 
-          <!-- <div class="page3_card-container">
+            <div class="page3_card-greeting">
+              <div class="page3_card-greeting-item">
+                <span class="page3_card-greeting-label">狗狗的名字</span>
+                <span class="page3_card-greeting-value" id="page3_name"
+                  >小贝</span
+                >
+              </div>
+              <div class="page3_card-greeting-item">
+                <span class="page3_card-greeting-label"
+                  >你和小狗的圣诞愿望</span
+                >
+                <span class="page3_card-greeting-value" id="page3_wish"
+                  >想要爵宴风干粮春节大礼包想要爵宴风干粮春节大礼包想要爵宴风干粮春节大礼包</span
+                >
+              </div>
+            </div>
+
+            <!-- <div class="page3_card-container">
             <div class="page3_card">
               <div class="card-header">
                 <div class="card-icon">🎄</div>
@@ -238,29 +260,44 @@
             </div>
           </div> -->
 
-          <div class="page3_txt">
-            <img src="img/page3-txt5.png" crossorigin="anonymous" />
-            <span class="page3_info_num" id="page3_serial">25</span>
-            <!-- <img
+            <div class="page3_txt">
+              <img
+                class="page3_img_txt6"
+                src="img/page3-txt6.png"
+                crossorigin="anonymous"
+              />
+              <span class="page3_info_num" id="page3_serial">00277</span>
+              <img
+                class="page3_img_txt7"
+                src="img/page3-txt7.png"
+                crossorigin="anonymous"
+              />
+              <!-- <span class="page3_info_num" id="page3_serial">25</span> -->
+              <!-- <img
               src="img/page3-txt2.png"  
               style="width: 30%; margin-right: auto; margin-left: 15%"
             />
             <div class="page3_num">150</div>
             <img src="img/page3-txt3.png" style="width: 80%" /> -->
-          </div>
+            </div>
 
-          <!-- <img class="page3_snowman" src="img/page3-snowman.png" /> -->
+            <!-- <div class="page3_info_num-container">
+              <span class="page3_info_num" id="page3_serial">00277</span>
+            </div> -->
 
-          <!-- <div class="page3_qr">
+            <!-- <img class="page3_snowman" src="img/page3-snowman.png" /> -->
+
+            <!-- <div class="page3_qr">
             <img
               src="img/logo-b-r-b.png"
               style="width: 35%; margin-left: auto"
             />
           </div> -->
 
-          <!-- <div class="page3_txt">
+            <!-- <div class="page3_txt">
             <img src="img/page3-txt4.png" style="width: 45%" />
           </div> -->
+          </div>
         </div>
         <!-- #endregion -->
       </div>
@@ -268,9 +305,14 @@
 
     <!-- #region mask&表单 -->
     <div class="mask">
+      <div class="page_snow mask_snow"></div>
+      <img class="mark_start1" src="img/mark-star1.png" />
+      <!-- <img class="mark_card1" src="img/mark-card1.png" /> -->
+
       <div class="mark_form">
         <!-- <img class="mark_form-img" src="img/MeatWay.webp" /> -->
-        <form action="" method="post">
+        <img class="mark_card2" src="img/mark-card2.png" />
+        <form class="mark_form_content" action="" method="post">
           <div class="mark_form_item">
             <div class="mark_form_tit">
               <img src="img/form-name.png" style="width: 35%" /><span></span>
@@ -296,6 +338,9 @@
           </a>
         </form>
       </div>
+
+      <!-- <img class="mark_txt1" src="img/mark-txt1.png" /> -->
+      <img class="mark_txt2" src="img/mark-txt2.png" />
     </div>
     <!-- #endregion -->
   </body>

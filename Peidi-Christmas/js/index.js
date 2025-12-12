@@ -1,5 +1,7 @@
 // 在文件顶部添加全局标志位 解决快速点击按钮多次滑动问题
 let isProcessing = false;
+
+//#region 弹幕数据相关
 const christmasSymbols = [
   "🎄",
   "🎁",
@@ -13,7 +15,7 @@ const christmasSymbols = [
   "🦴",
   "🍖"
 ];
-const commentList = [
+let commentList = [
   // "金毛寻回犬：希望圣诞老人给我一个超大的骨头玩具，可以啃一整天！",
   // "柯基犬：我想要一个会发出声音的球球，这样我就可以和主人一起玩了！",
   // "哈士奇：许愿每天都能去雪地里撒欢，雪是我的最爱！",
@@ -95,7 +97,8 @@ const commentList = [
   "希望能有专门的宠物主题公园",
   "许愿能有更多允许带宠物入住的民宿和酒店",
 ]
-let commentListTemp = [];
+// let commentListTemp = JSON.parse(JSON.stringify(processCommentList(commentList)));
+let commentListTemp = []
 // 处理并复制commentList函数
 function processCommentList(commentList) {
   return commentList.map(item => {
@@ -103,12 +106,34 @@ function processCommentList(commentList) {
   });
 }
 
+// 请求弹幕数据
+$.ajax({
+  url: `https://api.peidigroup.cn/ui/plant/christmas?pageNo=1&pageSize=50`,
+  type: 'GET',
+  success: function (response) {
+    console.log('弹幕GET请求成功:', response);
+    if (response.data?.records?.length > 0) {
+      commentList = response.data?.records.map(item => item.wish);
+      commentListTemp = JSON.parse(JSON.stringify(processCommentList(commentList)));
+    }
+  },
+  error: function (xhr, status, error) {
+    console.error('弹幕GET请求失败:', error);
+    // 即使GET请求失败也继续发送POST请求，避免影响用户体验
+    alert('获取弹幕数据失败，请刷新页面重试');
+  }
+});
+//#endregion
+
+// 愿望数据
 const wishForm = {
   name: "",
   tel: "",
   wish: "",
   serial: "" // 第几位许愿的
 }
+
+//#region  通用工具类函数
 // XSS防护函数 - 将HTML转义为纯文本
 function escapeHtml(text) {
   if (typeof text !== 'string') return text;
@@ -121,6 +146,17 @@ function escapeHtml(text) {
 function setSafeText(element, text) {
   if (typeof text !== 'string') return;
   $(element).text(text); // 使用text()而不是html()来防止XSS
+}
+
+// 截取字符串拼接...
+function truncateString(str, maxLength) {
+  if (str.length <= maxLength) return str;
+  return str.substring(0, maxLength) + '...';
+}
+
+// 格式化数字 前面补0
+function formatNumber(num, length) {
+  return num.toString().padStart(length, '0');
 }
 
 // 监听长按方法
@@ -137,7 +173,43 @@ $.fn.longPress = function (fn) {
   }
 };
 
-// 保存图片方法
+//判断访问终端
+const browser = {
+  versions: function () {
+    const u = navigator.userAgent, app = navigator.appVersion;
+    return {
+      trident: u.indexOf('Trident') > -1, // IE内核
+      presto: u.indexOf('Presto') > -1, // opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, // 苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1,// 火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), // 是否为移动终端
+      ios: !!u.match(/\(i[^;]+;\( U;\)\? CPU.+Mac OS X\)/), // ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1, // android终端
+      iPhone: u.indexOf('iPhone') > -1, // 是否为iPhone或者QQHD浏览器
+      iPad: u.indexOf('iPad') > -1, // 是否iPad
+      webApp: u.indexOf('Safari') == -1, // 是否web应该程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') > -1, // 是否微信 （2015-01-22新增）
+      qq: u.match(/sQQ/i) == " qq", // 是否QQ
+      isHuawei: u.toLowerCase().indexOf('huawei') > -1, // 是否华为
+    };
+  }(),
+  language: (navigator.browserLanguage || navigator.language).toLowerCase()
+}
+
+//判断机型方法类
+class DeviceType {
+  // 是否是IOS系统
+  static isIOS() {
+    return !!navigator.userAgent.match(/\(i[^;]+;\( U;\)\? CPU.+Mac OS X\)/);
+  }
+  // 是否是Safari浏览器
+  static isSafari() {
+    return /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent) > -1
+  }
+}
+//#endregion
+
+//#region  保存图片方法集合
 // var saveImgTimer = null;
 function saveImg() {
   // if (saveImgTimer) {
@@ -221,12 +293,18 @@ function saveCanvasToImgCross() {
     });
   });
 }
+
 // 替换HTML节点为Canvas元素 -Img跨域属性写在节点上 -转换为Base64
 function saveCanvasToImgImmediate() {
   const hbDOM = document.getElementById('hb');
   const hbImgs = hbDOM.querySelectorAll('img');
   const hbSerial = hbDOM.querySelector('#page3_serial');
-  hbSerial.style.top = '-120%';
+  // hbSerial.style.top = '-120%';
+
+  // 动态添加样式，解决文字偏移问题
+  // const style = document.createElement('style') // 创建一个 <style> 元素
+  // document.head.appendChild(style) // 将 <style> 添加到 <head>
+  // style.sheet?.insertRule('body > div:last-child img { display: inline-block; }') // 添加 CSS 规则
 
   html2canvas(hbDOM, {
     useCORS: true,
@@ -237,18 +315,81 @@ function saveCanvasToImgImmediate() {
   }).then(function (canvas) {
     $('canvas').remove();
     // 替换HTML节点为Canvas元素
-    hbDOM.innerHTML = '';
     // hbDOM.appendChild(canvas);
     // 插入Base64图片
     const imgUrl = canvas.toDataURL("image/png");
     const img = document.createElement('img');
     img.src = imgUrl;
+    img.style.position = 'absolute';
+    img.style.top = '0';
+    img.style.left = '0';
+    //hbDOM的所有节点替换为img
+    // hbDOM.replaceChild(img, hbDOM.firstChild);
+    // hbDOM.innerHTML = '';
     hbDOM.appendChild(img);
   }).catch(function (error) {
     console.error('截图失败:', error);
     alert('截图保存失败，请重试！');
   });
 }
+
+// 替换HTML节点为Canvas元素 -Img跨域属性写在节点上 -转换为Base64 -使用SnapDom插件 
+// TODO: 现在用来对华为做特殊处理，目前只有华为有问题，如果后续有新手机问题，把处理逻辑抽离出来
+async function saveCanvasToImgImmediateSnapDom() {
+  const hbDOM = document.getElementById('hb');
+  // const hbImgs = hbDOM.querySelectorAll('img');
+  const hbSerial = hbDOM.querySelector('#page3_serial');
+  hbSerial.style.fontSize = '2.35rem';
+  // hbSerial.style.marginBottom = '7%';
+  // hbSerial.style.top = '-120%';
+  // const hbSerialContainer = hbDOM.querySelector('.page3_info_num-container');
+  // hbSerialContainer.style.top = '77%';
+  const hbName = hbDOM.querySelector('#page3_name');
+  hbName.style.fontSize = '1.1rem';
+  const hbWish = hbDOM.querySelector('#page3_wish');
+  hbWish.style.fontSize = '1.1rem';
+
+  // 最简单的使用方式
+  const image = await snapdom.toPng(hbDOM);
+
+  image.style.position = 'absolute';
+  image.style.top = '0';
+  image.style.left = '0';
+
+  // 显示在页面上
+  // console.log(image);
+  // hbDOM.innerHTML = '';
+  hbDOM.appendChild(image);
+
+  // snapdom.toPng(hbDOM, {
+  //   useProxy: true // enables built-in CORS proxy fallback (optional)
+  // }).then(img => {
+  //   console.log(hbDOM, img);
+  //   // hbDOM.innerHTML = '';
+  //   hbDOM.appendChild(img);
+  // });
+  // html2canvas(hbDOM, {
+  //   useCORS: true,
+  //   allowTaint: false,  // 改为false，因为我们已经设置了crossorigin
+  //   scale: 2,
+  //   logging: false,
+  //   backgroundColor: null
+  // }).then(function (canvas) {
+  //   $('canvas').remove();
+  //   // 替换HTML节点为Canvas元素
+  //   hbDOM.innerHTML = '';
+  //   // hbDOM.appendChild(canvas);
+  //   // 插入Base64图片
+  //   const imgUrl = canvas.toDataURL("image/png");
+  //   const img = document.createElement('img');
+  //   img.src = imgUrl;
+  //   hbDOM.appendChild(img);
+  // }).catch(function (error) {
+  //   console.error('截图失败:', error);
+  //   alert('截图保存失败，请重试！');
+  // });
+}
+//#endregion
 
 $(function () {
   const winW = $(window).width();
@@ -422,8 +563,14 @@ $(function () {
         slideChangeTransitionEnd: function () {
           swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
           if (this.activeIndex == 1) {
-            danmu_manager.startPlaying();
-            startDanmuTimer();
+            // danmu_manager.startPlaying();
+            // startDanmuTimer();
+          }
+          if (this.activeIndex == 2) {
+            // danmu_manager.startPlaying();
+            // startDanmuTimer();
+            stopDanmuTimer();
+            danmu_manager.stopPlaying();
           }
         }
       }
@@ -450,23 +597,56 @@ $(function () {
     //#region 场景2 弹幕逻辑 page2_danmu
     // 需要添加的样式
     const danmu_styles = {
-      color: '#ff6b6b',
-      fontSize: '16px',
+      color: '#ffffffc5',
+      fontSize: '0.8rem',
+      // 添加iOS特定样式防止字体自动调整
+      '-webkit-text-size-adjust': 'none',
+      'text-size-adjust': 'none',
+      // 确保文本不会换行
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      // 设置最大宽度
+      maxWidth: '100%',
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
       padding: '6px 12px',
       borderRadius: '20px',
-      border: '2px solid #ff6b6b',
+      border: '2px solid #ffffff50',
       textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)',
       fontWeight: 'bold',
       boxShadow: '0 3px 10px rgba(0, 0, 0, 0.2)',
-      lineHeight: '1.4',
-      whiteSpace: 'nowrap'
+      lineHeight: '1.4'
+
+      // color: '#ffffffc5',
+      // fontSize: '0.75rem',
+      // backgroundColor: 'rgba(0, 0, 0, 0.3)',
+      // padding: '6px 12px',
+      // borderRadius: '20px',
+      // border: '2px solid #ffffff50',
+      // textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3)',
+      // fontWeight: 'bold',
+      // boxShadow: '0 3px 10px rgba(0, 0, 0, 0.2)',
+      // lineHeight: '1.4',
+      // whiteSpace: 'nowrap'
     };
     var danmu_manager = Danmu.create({
       speed: 0.1,
       plugin: {
         $createNode(danmaku) {
-          danmaku.node.textContent = danmaku.data;
+          // danmaku.node.textContent = danmaku.data;
+          // console.log(danmaku.node);
+
+          // 处理长文本，确保不会导致字体变化
+          let text = danmaku.data;
+          // 如果文本过长，进行截断处理
+          if (text.length > 50) {
+            text = text.substring(0, 47) + '...';
+          }
+          danmaku.node.textContent = text;
+          // 强制设置字体大小
+          danmaku.node.style.fontSize = '0.75rem';
+          danmaku.node.style.webkitTextSizeAdjust = 'none';
+          danmaku.node.style.textSizeAdjust = 'none';
         },
         $beforeMove(danmaku) {
           for (const key in danmu_styles) {
@@ -485,17 +665,26 @@ $(function () {
     });
     const page2_danmu_container = document.getElementById('page2_danmu');
     danmu_manager.mount(page2_danmu_container);
-    // danmu_manager.startPlaying();
+    danmu_manager.startPlaying();
+    startDanmuTimer()
 
+    var page2_danmu_timer = null;
     // 开启弹幕定时器
     function startDanmuTimer() {
-      var page2_danmu_timer = setInterval(function () {
+      if (page2_danmu_timer) return;
+      page2_danmu_timer = setInterval(function () {
         if (commentListTemp.length > 0) {
           danmu_manager.push(commentListTemp.shift());
         } else {
           commentListTemp = JSON.parse(JSON.stringify(processCommentList(commentList)));
         }
-      }, 1000 * 1);
+      }, 1000 * 0.5);
+    }
+    // 关闭弹幕定时器
+    function stopDanmuTimer() {
+      if (!page2_danmu_timer) return;
+      clearInterval(page2_danmu_timer);
+      page2_danmu_timer = null;
     }
     //#endregion
 
@@ -505,6 +694,7 @@ $(function () {
 
       isProcessing = true;
       $(this).addClass('anjian');
+      // $('.mark_form').height($('.mark_card').height());
       setTimeout(function () {
         $('.page2').removeClass('anjian');
         $('.mask').fadeIn();
@@ -519,13 +709,13 @@ $(function () {
       setTimeout(function () {
         $('#sub').removeClass('anjian');
       }, 400)
-      if (!$('#name').val()) {
+      if (!$('#name').val().trim()) {
         alert('请输入狗狗的名字！');
         return false;
-      } else if (!$('#tel').val()) {
+      } else if (!$('#tel').val().trim()) {
         alert('请输入你的微信ID或手机号！');
         return false;
-      } else if (!$('#wish').val()) {
+      } else if (!$('#wish').val().trim()) {
         alert('请输入你和小狗的圣诞愿望！');
         return false;
       } else {
@@ -562,17 +752,17 @@ $(function () {
       // 请求成功后执行的函数
       function executeAfterPostSuccess() {
         $.ajax({
-          url: `https://api.peidigroup.cn/ui/plant/christmas?pageNo=1&pageSize=9999999`,
+          url: `https://api.peidigroup.cn/ui/plant/christmas?pageNo=1&pageSize=1`,
           type: 'GET',
           success: function (response) {
             console.log('GET请求成功，total值为:', response);
 
-            wishForm.serial = response.data?.total;
+            wishForm.serial = 120 + response.data?.total ?? 0;
 
             // 安全地设置文本内容，使用text()而不是html()
-            setSafeText('#page3_name', wishForm.name);
-            setSafeText('#page3_wish', wishForm.wish);
-            setSafeText('#page3_serial', wishForm.serial.toString());
+            setSafeText('#page3_name', truncateString(wishForm.name, 8));
+            setSafeText('#page3_wish', truncateString(wishForm.wish, 25));
+            setSafeText('#page3_serial', formatNumber(wishForm.serial, 5));
 
             setTimeout(function () {
 
@@ -581,7 +771,25 @@ $(function () {
               mc.slideNext();
               mc.allowTouchMove = false;
 
-              saveCanvasToImgImmediate();
+              if (browser.versions.isHuawei) {
+                // alert('华为手机');
+                setTimeout(() => {
+                  saveCanvasToImgImmediateSnapDom();
+                }, 800);
+              } else {
+                saveCanvasToImgImmediate();
+              }
+
+
+              // if (DeviceType.isIOS() || DeviceType.isSafari() || browser.versions.iPhone || browser.versions.iPad) {
+              //   saveCanvasToImgImmediate();
+              // } else {
+              //   setTimeout(() => {
+              //     saveCanvasToImgImmediateSnapDom();
+              //   }, 800);
+              // }
+
+              // saveCanvasToImgImmediate();
               // $('#hb').longPress(() => {
               //   saveImg();
               // });
