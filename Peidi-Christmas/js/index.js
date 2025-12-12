@@ -300,7 +300,7 @@ function saveCanvasToImgImmediate() {
   const hbDOM = document.getElementById('hb');
   const hbImgs = hbDOM.querySelectorAll('img');
   const hbSerial = hbDOM.querySelector('#page3_serial');
-  // hbSerial.style.top = '-120%';
+  hbSerial.style.marginBottom = '0.8rem';
 
   // 动态添加样式，解决文字偏移问题
   // const style = document.createElement('style') // 创建一个 <style> 元素
