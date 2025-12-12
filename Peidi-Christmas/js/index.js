@@ -120,6 +120,7 @@ $.ajax({
   error: function (xhr, status, error) {
     console.error('弹幕GET请求失败:', error);
     // 即使GET请求失败也继续发送POST请求，避免影响用户体验
+    commentListTemp = JSON.parse(JSON.stringify(processCommentList(commentList)));
     alert('获取弹幕数据失败，请刷新页面重试');
   }
 });
@@ -204,7 +205,7 @@ class DeviceType {
   }
   // 是否是Safari浏览器
   static isSafari() {
-    return /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent) > -1
+    return /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)
   }
 }
 //#endregion
@@ -757,7 +758,7 @@ $(function () {
           success: function (response) {
             console.log('GET请求成功，total值为:', response);
 
-            wishForm.serial = 120 + response.data?.total ?? 0;
+            wishForm.serial = 120 + (response.data?.total ?? 0);
 
             // 安全地设置文本内容，使用text()而不是html()
             setSafeText('#page3_name', truncateString(wishForm.name, 8));
