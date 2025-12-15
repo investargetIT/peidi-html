@@ -108,7 +108,7 @@ function processCommentList(commentList) {
 
 // 请求弹幕数据
 $.ajax({
-  url: `https://api.peidigroup.cn/ui/plant/christmas?pageNo=1&pageSize=50`,
+  url: `https://api.peidigroup.cn/ui/plant/christmas?pageNo=1&pageSize=50&searchStr=%7B%22searchName%22%3A%22json%22%2C%22searchType%22%3A%22equals%22%2C%22searchValue%22%3A%221%22%7D`,
   type: 'GET',
   success: function (response) {
     console.log('弹幕GET请求成功:', response);
@@ -732,7 +732,8 @@ $(function () {
           data: JSON.stringify({
             "mobile": wishForm.tel,
             "wechat": wishForm.tel,
-            "wish": wishForm.wish
+            "wish": wishForm.wish,
+            "json": "0"
           }),
           success: function (response) {
             console.log('POST请求成功:', response);
