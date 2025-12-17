@@ -108,7 +108,7 @@ function processCommentList(commentList) {
 
 // 请求弹幕数据
 $.ajax({
-  url: `https://api.peidigroup.cn/ui/plant/christmas?pageNo=1&pageSize=50`,
+  url: `https://api.peidigroup.cn/ui/plant/christmas?pageNo=1&pageSize=50&searchStr=%7B%22searchName%22%3A%22json%22%2C%22searchType%22%3A%22equals%22%2C%22searchValue%22%3A%221%22%7D`,
   type: 'GET',
   success: function (response) {
     console.log('弹幕GET请求成功:', response);
@@ -120,6 +120,7 @@ $.ajax({
   error: function (xhr, status, error) {
     console.error('弹幕GET请求失败:', error);
     // 即使GET请求失败也继续发送POST请求，避免影响用户体验
+    commentListTemp = JSON.parse(JSON.stringify(processCommentList(commentList)));
     alert('获取弹幕数据失败，请刷新页面重试');
   }
 });
@@ -204,7 +205,7 @@ class DeviceType {
   }
   // 是否是Safari浏览器
   static isSafari() {
-    return /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent) > -1
+    return /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)
   }
 }
 //#endregion
@@ -299,7 +300,7 @@ function saveCanvasToImgImmediate() {
   const hbDOM = document.getElementById('hb');
   const hbImgs = hbDOM.querySelectorAll('img');
   const hbSerial = hbDOM.querySelector('#page3_serial');
-  // hbSerial.style.top = '-120%';
+  hbSerial.style.marginBottom = '0.8rem';
 
   // 动态添加样式，解决文字偏移问题
   // const style = document.createElement('style') // 创建一个 <style> 元素
@@ -731,7 +732,8 @@ $(function () {
           data: JSON.stringify({
             "mobile": wishForm.tel,
             "wechat": wishForm.tel,
-            "wish": wishForm.wish
+            "wish": wishForm.wish,
+            "json": "0"
           }),
           success: function (response) {
             console.log('POST请求成功:', response);
@@ -757,7 +759,7 @@ $(function () {
           success: function (response) {
             console.log('GET请求成功，total值为:', response);
 
-            wishForm.serial = 120 + response.data?.total ?? 0;
+            wishForm.serial = 120 + (response.data?.total ?? 0);
 
             // 安全地设置文本内容，使用text()而不是html()
             setSafeText('#page3_name', truncateString(wishForm.name, 8));
