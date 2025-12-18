@@ -106,24 +106,25 @@ function processCommentList(commentList) {
   });
 }
 
+// FIXME: 审核状态参数已经改变，字段变成了hasReview，传false（未审核）/true（已审核），后续启用弹幕查询需要修改url
 // 请求弹幕数据
-$.ajax({
-  url: `https://api.peidigroup.cn/ui/plant/christmas?pageNo=1&pageSize=50&searchStr=%7B%22searchName%22%3A%22json%22%2C%22searchType%22%3A%22equals%22%2C%22searchValue%22%3A%221%22%7D`,
-  type: 'GET',
-  success: function (response) {
-    console.log('弹幕GET请求成功:', response);
-    if (response.data?.records?.length > 0) {
-      commentList = response.data?.records.map(item => item.wish);
-      commentListTemp = JSON.parse(JSON.stringify(processCommentList(commentList)));
-    }
-  },
-  error: function (xhr, status, error) {
-    console.error('弹幕GET请求失败:', error);
-    // 即使GET请求失败也继续发送POST请求，避免影响用户体验
-    commentListTemp = JSON.parse(JSON.stringify(processCommentList(commentList)));
-    alert('获取弹幕数据失败，请刷新页面重试');
-  }
-});
+// $.ajax({
+//   url: `https://api.peidigroup.cn/ui/plant/christmas?pageNo=1&pageSize=50&searchStr=%7B%22searchName%22%3A%22json%22%2C%22searchType%22%3A%22equals%22%2C%22searchValue%22%3A%221%22%7D`,
+//   type: 'GET',
+//   success: function (response) {
+//     console.log('弹幕GET请求成功:', response);
+//     if (response.data?.records?.length > 0) {
+//       commentList = response.data?.records.map(item => item.wish);
+//       commentListTemp = JSON.parse(JSON.stringify(processCommentList(commentList)));
+//     }
+//   },
+//   error: function (xhr, status, error) {
+//     console.error('弹幕GET请求失败:', error);
+//     // 即使GET请求失败也继续发送POST请求，避免影响用户体验
+//     commentListTemp = JSON.parse(JSON.stringify(processCommentList(commentList)));
+//     alert('获取弹幕数据失败，请刷新页面重试');
+//   }
+// });
 //#endregion
 
 // 愿望数据
@@ -733,7 +734,7 @@ $(function () {
             "mobile": wishForm.tel,
             "wechat": wishForm.tel,
             "wish": wishForm.wish,
-            "json": "0"
+            "hasReview": false,
           }),
           success: function (response) {
             console.log('POST请求成功:', response);
