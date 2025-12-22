@@ -1,0 +1,30 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+#i37t{
+  color:black;
+}
+@media (max-width: 480px){
+  #i37t{
+    width:100%;
+    height:100%;
+  }
+  #i9l8{
+    color:black;
+    width:100%;
+    height:100%;
+  }
+  #iwkt{
+    color:black;
+    width:100%;
+    height:100%;
+  }
+  #ip2f{
+    color:black;
+    width:100%;
+    height:100%;
+  }
+}

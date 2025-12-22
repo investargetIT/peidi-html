@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+
+  <link href="plugins/grapes.min.css" rel="stylesheet" type="text/css" />
+  <!-- 引入插件css -->
+  <!-- <link href="plugins/grapesjs-plugin-filestack.css" rel="stylesheet" type="text/css" /> -->
+  <!-- <link href="plugins/grapesjs-plugin-toolbox.min.css" rel="stylesheet" type="text/css" /> -->
+
+  <script src="plugins/grapes.min.js" type="text/javascript" charset="utf-8"></script>
+  <!-- 引入插件js -->
+  <!-- 官网插件 -->
+  <script src="plugins/grapesjs-plugin-export.js" type="text/javascript" charset="utf-8"></script>
+  <!-- <script src="plugins/grapesjs-plugin-filestack.min.js" type="text/javascript" charset="utf-8"></script> -->
+  <script src="plugins/grapesjs-plugin-ckeditor.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-tui-image-editor.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-blocks-basic.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-plugin-forms.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-navbar.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-component-countdown.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-style-gradient.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-style-filter.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-style-bg.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-blocks-flexbox.js" type="text/javascript" charset="utf-8"></script>
+  <!-- <script src="plugins/grapesjs-lory-slider.js" type="text/javascript" charset="utf-8"></script> -->
+  <script src="plugins/grapesjs-tabs.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-tooltip.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-custom-code.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-touch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-indexeddb.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-firestore.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-parser-postcss.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-typed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-ui-suggest-classes.js" type="text/javascript" charset="utf-8"></script>
+  <!-- <script src="plugins/grapesjs-fonts.js" type="text/javascript" charset="utf-8"></script> -->
+  <!-- 社区插件 -->
+  <!-- <script src="plugins/grapesjs-table.js" type="text/javascript" charset="utf-8"></script> -->
+  <!-- <script src="plugins/grapesjs-plugin-toolbox.js" type="text/javascript" charset="utf-8"></script> -->
+  <script src="plugins/grapesjs-script-editor.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-rte-extensions.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-data-source.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-chartjs-plugin.js" type="text/javascript" charset="utf-8"></script>
+  <!-- <script src="plugins/grapesjs-blocks-bootstrap5.js" type="text/javascript" charset="utf-8"></script> -->
+  <script src="plugins/grapesjs-rulers.js" type="text/javascript" charset="utf-8"></script>
+  <!-- <script src="plugins/grapesjs-swiper-slider.min.js" type="text/javascript" charset="utf-8"></script> -->
+  <script src="plugins/grapesjs-advanced-selector.js" type="text/javascript" charset="utf-8"></script>
+  <!-- <script src="plugins/grapesjs-loading.js" type="text/javascript" charset="utf-8"></script> -->
+
+  <script src="plugins/grapesjs-preset-webpage.js" type="text/javascript" charset="utf-8"></script>
+  <script src="plugins/grapesjs-preset-newsletter.js" type="text/javascript" charset="utf-8"></script>
+
+  <!-- 自己写的插件 -->
+  <script src="custom/peidi-grapesjs-swiper.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+  <div id="gjs"></div>
+  <script type="text/javascript">
+    var editor = grapesjs.init({
+      container: "#gjs",
+      // 插件注册
+      plugins: [
+        "grapesjs-plugin-export",
+        // "grapesjs-plugin-filestack",
+        "grapesjs-plugin-ckeditor",
+        "grapesjs-tui-image-editor",
+        "gjs-blocks-basic",
+        "grapesjs-plugin-forms",
+        "grapesjs-navbar",
+        "grapesjs-component-countdown",
+        "grapesjs-style-gradient",
+        "grapesjs-style-filter",
+        "grapesjs-style-bg",
+        "grapesjs-blocks-flexbox",
+        // "grapesjs-lory-slider",
+        "grapesjs-tabs",
+        "grapesjs-tooltip",
+        "grapesjs-custom-code",
+        "grapesjs-touch",
+        "grapesjs-indexeddb",
+        "grapesjs-firestore",
+        "grapesjs-parser-postcss",
+        "grapesjs-typed",
+        "grapesjs-ui-suggest-classes",
+        // "@silexlabs/grapesjs-fonts",
+        // "grapesjs-table",
+        // "grapesjs-plugin-toolbox",
+        "grapesjs-script-editor",
+        "grapesjs-rte-extensions",
+        // "@silexlabs/grapesjs-data-source",
+        "grapesjs-chartjs-plugin",
+        // "grapesjs-blocks-bootstrap5",
+        "grapesjs-rulers",
+        // "grapesjs-swiper-slider",
+        "peidi-grapesjs-swiper",
+        "@silexlabs/grapesjs-advanced-selector",
+        // "@silexlabs/grapesjs-loading",
+
+        /** 两个主题插件 */
+        "grapesjs-preset-webpage",
+        "grapesjs-preset-newsletter",
+      ],
+      // 插件配置
+      pluginsOpts: {
+        "grapesjs-plugin-export": {},
+        // "grapesjs-plugin-filestack": {
+        // apiKey: "",
+        //   },
+        "grapesjs-plugin-ckeditor": {},
+        "grapesjs-tui-image-editor": {
+          config: {
+            includeUI: {
+              initMenu: 'filter',
+            },
+          },
+        },
+        "gjs-blocks-basic": {},
+        "grapesjs-plugin-forms": {},
+        "grapesjs-navbar": {},
+        "grapesjs-component-countdown": {},
+        "grapesjs-style-gradient": {},
+        "grapesjs-style-filter": {},
+        "grapesjs-style-bg": {},
+        "grapesjs-blocks-flexbox": {},
+        // "grapesjs-lory-slider": {},
+        "grapesjs-tabs": {},
+        "grapesjs-tooltip": {},
+        "grapesjs-custom-code": {},
+        "grapesjs-touch": {},
+        "grapesjs-indexeddb": {},
+        "grapesjs-firestore": {},
+        "grapesjs-parser-postcss": {},
+        "grapesjs-typed": {},
+        "grapesjs-ui-suggest-classes": {},
+        // "@silexlabs/grapesjs-fonts": {
+        //    api_key: '...',
+        // },
+        // "grapesjs-table": {},
+        // "grapesjs-plugin-toolbox": {},
+        "grapesjs-script-editor": {},
+        'grapesjs-rte-extensions': {
+          // default options
+          base: {
+            bold: true,
+            italic: true,
+            underline: true,
+            strikethrough: true,
+            link: true,
+          },
+          //fonts: {
+          //  fontName: ['font1',...,'fontn'],
+          //  fontSize: true,
+          //  //An array of strings representing colors
+          //  fontColor: ['#fff',...],
+          //  //An array of strings representing colors
+          //  hilite: ['#fff',...],
+          //}
+          fonts: {
+            fontColor: true,
+            hilite: true,
+          },
+          format: {
+            heading1: true,
+            heading2: true,
+            heading3: true,
+            //heading4: false,
+            //heading5: false,
+            //heading6: false,
+            paragraph: true,
+            //quote: false,
+            clearFormatting: true,
+          },
+          subscriptSuperscript: false,//|true
+          indentOutdent: false,//|true
+          list: false,//|true
+          align: true,//|true
+          //actions: {
+          //  copy: true,
+          //  cut: true,
+          //  paste: true,
+          //  delete: true,
+          //},
+          actions: false,//|true
+          undoredo: false,//|true
+          extra: false,//|true
+          darkColorPicker: true,//|false
+          maxWidth: '600px'
+        },
+        // "@silexlabs/grapesjs-data-source": {},
+        "grapesjs-chartjs-plugin": {},
+        // 'grapesjs-blocks-bootstrap5': {
+        //   blocks: {
+        //     // ...
+        //   },
+        //   blockCategories: {
+        //     // ...
+        //   },
+        //   labels: {
+        //     // ...
+        //   },
+        //   // ...
+        // }
+        "grapesjs-rulers": {},
+        // "grapesjs-swiper-slider": {},
+        "peidi-grapesjs-swiper": {},
+        "@silexlabs/grapesjs-advanced-selector": {},
+        // "@silexlabs/grapesjs-loading": {},
+
+        "grapesjs-preset-newsletter": {},
+        "grapesjs-preset-webpage": {
+          modalImportContent: editor => editor.getHtml()
+        },
+      },
+      canvas: {
+        styles: [
+          // 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css',
+          '/dependency/swiper-bundle.min.css',
+        ],
+        scripts: [
+          // 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
+          // 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js',
+          // 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js',
+          '/dependency/swiper-bundle.min.js',
+        ],
+      }
+    });
+  </script>
+</body>
+
+</html>
