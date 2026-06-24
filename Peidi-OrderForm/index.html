@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <title>订单关联 - 佩蒂</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #09348B 0%, #1a5eb8 100%);
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 背景装饰 */
+        .bg-decoration {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            opacity: 0.1;
+            background: white;
+        }
+
+        .bg-decoration-1 {
+            top: -200px;
+            right: -100px;
+        }
+
+        .bg-decoration-2 {
+            bottom: -200px;
+            left: -100px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 0;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* 底部图片 */
+        .bottom-image {
+            width: 100%;
+            height: 100px;
+            background-image: url('img/p2.png');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .bottom-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(white, transparent);
+        }
+
+        /* 顶部图片 */
+        .hero-image {
+            width: 100%;
+            height: 130px;
+            background-image: url('img/p1.png');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .hero-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(transparent, white);
+        }
+
+        .content-area {
+            padding: 0 24px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                border-radius: 16px;
+            }
+
+            .hero-image {
+                height: 110px;
+            }
+
+            .content-area {
+                padding: 0 18px;
+            }
+
+            .logo-container {
+                width: 64px;
+                height: 64px;
+                border-radius: 14px;
+            }
+
+            .brand-name {
+                font-size: 22px;
+            }
+
+            .brand-slogan {
+                font-size: 13px;
+            }
+
+            h1 {
+                font-size: 18px;
+                margin-bottom: 14px;
+            }
+
+            .benefits {
+                padding: 12px;
+                gap: 8px;
+            }
+
+            .benefit-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 16px;
+            }
+
+            .benefit-title {
+                font-size: 12px;
+            }
+
+            input[type="text"] {
+                padding: 13px 16px;
+                font-size: 16px; /* 防止iOS缩放 */
+            }
+
+            .input-hint {
+                font-size: 11px;
+                margin-top: 6px;
+            }
+
+            button {
+                padding: 14px;
+                font-size: 16px;
+            }
+
+            .security-info {
+                margin-top: 16px;
+                padding-top: 12px;
+            }
+
+            .footer {
+                margin-top: 0;
+                padding: 10px 18px;
+                font-size: 11px;
+            }
+
+            .bottom-image {
+                height: 85px;
+            }
+        }
+
+        /* 品牌头部 */
+        .brand-header {
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .logo-container {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #09348B 0%, #1a5eb8 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            box-shadow: 0 8px 20px rgba(9, 52, 139, 0.4);
+        }
+
+        .logo-placeholder {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .brand-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .brand-slogan {
+            color: #999;
+            font-size: 14px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 16px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        /* 好处说明 */
+        .benefits {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .benefit-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #09348B 0%, #1a5eb8 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .benefit-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .benefit-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .benefit-desc {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+            background-color: #fafafa;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: #09348B;
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(9, 52, 139, 0.1);
+        }
+
+        input[type="text"]::placeholder {
+            color: #ccc;
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #09348B 0%, #1a5eb8 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(9, 52, 139, 0.4);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(9, 52, 139, 0.5);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #ccc;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            margin-top: 24px;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+            font-size: 15px;
+        }
+
+        .message.success {
+            background-color: #f0f9eb;
+            color: #52c41a;
+            display: block;
+            border: 1px solid #b7eb8f;
+        }
+
+        .message.error {
+            background-color: #fff2f0;
+            color: #ff4d4f;
+            display: block;
+            border: 1px solid #ffccc7;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 安全提示 */
+        .security-info {
+            margin-top: 20px;
+            padding-top: 14px;
+            border-top: 1px solid #f0f0f0;
+            text-align: center;
+        }
+
+        .security-info p {
+            color: #999;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .security-icon {
+            width: 18px;
+            height: 18px;
+            background: #52c41a;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .security-icon svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* 页脚 */
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            color: #bbb;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-decoration bg-decoration-1"></div>
+    <div class="bg-decoration bg-decoration-2"></div>
+
+    <div class="container">
+        <!-- 顶部图片 -->
+        <div class="hero-image"></div>
+
+        <div class="content-area">
+            <!-- 品牌头部 -->
+            <div class="brand-header" style="margin-top: -40px; position: relative; z-index: 2;">
+                <div class="logo-container">
+                    <img src="img/logo.webp" alt="佩蒂宠物" style="width: 44px; height: 44px; object-fit: contain;">
+                </div>
+                <div class="brand-name">佩蒂宠物</div>
+            </div>
+
+        <h1>订单关联</h1>
+
+        <!-- 好处说明 -->
+        <div class="benefits">
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 2V8H20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8 13H12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8 17H16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="benefit-text">
+                    <div class="benefit-title">关联佩蒂数据中心</div>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="benefit-text">
+                    <div class="benefit-title">一键绑定宠物档案</div>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 12H8.01" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M12 12H12.01" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M16 12H16.01" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M21 11.5C21 16.75 16.75 21 11.5 21C6.25 21 2 16.75 2 11.5C2 6.25 6.25 2 11.5 2" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M22 4L20 7L17 6L22 4Z" fill="white"/>
+                    </svg>
+                </div>
+                <div class="benefit-text">
+                    <div class="benefit-title">专业病情咨询</div>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 6H6C4.89543 6 4 6.89543 4 8V16C4 17.1046 4.89543 18 6 18H10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 6H18C19.1046 6 20 6.89543 20 8V16C20 17.1046 19.1046 18 18 18H14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 4V20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8 8V8.01" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M16 8V8.01" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M8 16V16.01" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M16 16V16.01" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="benefit-text">
+                    <div class="benefit-title">专属优惠券</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="orderNo">订单编号</label>
+            <div class="input-wrapper">
+                <input type="text" id="orderNo" placeholder="请输入订单编号">
+            </div>
+            <div class="input-hint">支持天猫、京东、抖音等任何平台的订单编号</div>
+        </div>
+
+        <button id="submitBtn" onclick="submitOrder()">确定关联</button>
+        <div id="message" class="message"></div>
+
+        <!-- 安全提示 -->
+        <div class="security-info">
+            <p>
+                <span class="security-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L3 7V11C3 16.5 6.84 21.74 12 23C17.16 21.74 21 16.5 21 11V7L12 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 12L11 14L15 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+                您的信息已加密保护，安全可靠
+            </p>
+        </div>
+        </div>
+
+        <!-- 底部图片 -->
+        <div class="bottom-image"></div>
+
+        <!-- 页脚 -->
+        <div class="footer" style="padding: 10px 20px; margin: 0;">
+            Copyright © 2025 佩蒂动物营养科技股份有限公司 All Rights Reserved.
+        </div>
+    </div>
+
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <script>
+        // 后端接口地址
+        const API_URL = 'https://your-api-domain.com/api/order/link';
+
+        // 微信userid（实际项目中通过小程序获取）
+        let wechatUserId = '';
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initWechat();
+        });
+
+        // 初始化微信相关
+        function initWechat() {
+            // 尝试从小程序获取userid
+            if (typeof wx !== 'undefined' && wx.miniProgram) {
+                // 向小程序发送消息请求userid
+                wx.miniProgram.postMessage({ data: 'getUserId' });
+                
+                // 监听小程序返回的消息
+                wx.miniProgram.onMessage(function(res) {
+                    if (res && res.userId) {
+                        wechatUserId = res.userId;
+                        console.log('获取到微信userid:', wechatUserId);
+                    }
+                });
+            }
+            
+            // 模拟获取userid（开发测试用）
+            // 实际项目中请删除以下代码
+            if (!wechatUserId) {
+                wechatUserId = 'test_user_123456'; // 测试用userid
+                console.log('使用测试userid:', wechatUserId);
+            }
+        }
+
+        // 提交订单关联
+        function submitOrder() {
+            const orderNo = document.getElementById('orderNo').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+            const messageDiv = document.getElementById('message');
+
+            // 验证订单编号
+            if (!orderNo) {
+                showMessage('请输入订单编号', 'error');
+                return;
+            }
+
+            // 验证userid
+            if (!wechatUserId) {
+                showMessage('无法获取用户信息，请重试', 'error');
+                return;
+            }
+
+            // 禁用按钮，显示加载状态
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading"></span>提交中...';
+            messageDiv.style.display = 'none';
+
+            // 准备请求数据
+            const requestData = {
+                orderNo: orderNo,
+                userId: wechatUserId
+            };
+
+            console.log('提交数据:', requestData);
+
+            // 调用后端接口
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('网络请求失败');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('接口返回:', data);
+                if (data.success || data.code === 200) {
+                    showMessage('订单关联成功！', 'success');
+                    // 可选：延迟跳转或关闭页面
+                    setTimeout(() => {
+                        if (typeof wx !== 'undefined' && wx.miniProgram) {
+                            wx.miniProgram.navigateBack();
+                        }
+                    }, 1500);
+                } else {
+                    showMessage(data.message || '订单关联失败，请重试', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('请求错误:', error);
+                showMessage('网络错误，请稍后重试', 'error');
+            })
+            .finally(() => {
+                // 恢复按钮状态
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '确定';
+            });
+        }
+
+        // 显示消息
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
+        }
+    </script>
+</body>
+</html>
