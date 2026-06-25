@@ -439,6 +439,138 @@
             color: #bbb;
             font-size: 12px;
         }
+
+        /* 成功/失败状态动画 */
+        .status-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.98);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .status-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .status-icon-wrapper {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 24px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .status-icon-wrapper.success {
+            background: linear-gradient(135deg, #52c41a 0%, #73d13d 100%);
+            box-shadow: 0 10px 30px rgba(82,196,26,0.3);
+        }
+
+        .status-icon-wrapper.error {
+            background: linear-gradient(135deg, #ff4d4f 0%, #ff7875 100%);
+            box-shadow: 0 10px 30px rgba(255,77,79,0.3);
+        }
+
+        .status-icon {
+            width: 50px;
+            height: 50px;
+        }
+
+        .status-icon-wrapper.success .status-icon path {
+            stroke-dasharray: 60;
+            stroke-dashoffset: 60;
+            animation: drawCheck 0.6s ease forwards 0.3s;
+        }
+
+        .status-icon-wrapper.error .status-icon path {
+            stroke-dasharray: 60;
+            stroke-dashoffset: 60;
+            animation: drawCross 0.6s ease forwards 0.3s;
+        }
+
+        @keyframes drawCheck {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes drawCross {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .status-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .status-desc {
+            font-size: 15px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .status-btn {
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #09348B 0%, #1a5eb8 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(9,52,139,0.3);
+        }
+
+        .status-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(9,52,139,0.4);
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: confettiFall 1.5s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(150px) rotate(720deg);
+            }
+        }
+
+        /* 隐藏调试信息 */
+        #debugInfo,
+        .debug-container {
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -532,14 +664,6 @@
                 </div>
             </div>
 
-            <div style="background: #f5f7fa; padding: 16px; border-radius: 12px; margin-bottom: 20px;">
-                <div style="font-size: 14px; color: #666; margin-bottom: 8px;">🔍 调试信息</div>
-                <div id="debugInfo"
-                    style="font-family: monospace; font-size: 12px; word-break: break-all; color: #333;">
-                    初始化中...
-                </div>
-            </div>
-
             <div class="form-group">
                 <label for="orderNo">订单编号</label>
                 <div class="input-wrapper">
@@ -576,6 +700,23 @@
         </div>
     </div>
 
+    <!-- 状态遮罩层 -->
+    <div id="statusOverlay" class="status-overlay">
+        <div id="statusIconWrapper" class="status-icon-wrapper">
+            <!-- Success Icon -->
+            <svg id="successIcon" class="status-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+                <path d="M5 13L9 17L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <!-- Error Icon -->
+            <svg id="errorIcon" class="status-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+                <path d="M6 6L18 18M6 18L18 6" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <div id="statusTitle" class="status-title"></div>
+        <div id="statusDesc" class="status-desc"></div>
+        <button id="statusBtn" class="status-btn" onclick="closeStatusOverlay()">好的</button>
+    </div>
+
     <!-- 仅需要基础功能，不需要额外的 SDK -->
     <script>
         // ===================== 配置区域（请修改这些配置）=====================
@@ -598,26 +739,13 @@
 
         // 初始化企业微信
         function initQywx() {
-            // 显示调试信息
-            const debugDiv = document.getElementById('debugInfo');
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
 
-            debugDiv.innerHTML = `
-                <div><strong>当前URL:</strong> ${window.location.href}</div>
-                <div><strong>URL参数:</strong> ${JSON.stringify(Object.fromEntries(urlParams))}</div>
-                <div><strong>code:</strong> ${code || '暂无'}</div>
-            `;
-
             if (code) {
-                // 如果有 code，保存起来，等待用户提交订单
                 console.log('✅ URL中找到code:', code);
                 authCode = code;
-                debugDiv.innerHTML += `
-                    <div style="color: #52c41a; margin-top: 8px;"><strong>✅ 已获取code，可提交订单</strong></div>
-                `;
             } else {
-                // 如果没有 code，跳转到企业微信授权
                 console.log('URL中没有code，跳转到授权页面');
                 redirectToAuth();
             }
@@ -625,12 +753,8 @@
 
         // 跳转到企业微信授权页面
         function redirectToAuth() {
-            // 当前页面地址，授权后会跳转回来
             const redirectUri = encodeURIComponent(window.location.href);
-
-            // 企业微信授权地址
             const authUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${CORP_ID}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`;
-
             console.log('跳转到授权页面:', authUrl);
             window.location.href = authUrl;
         }
@@ -640,26 +764,21 @@
             const orderNo = document.getElementById('orderNo').value.trim();
             const submitBtn = document.getElementById('submitBtn');
             const messageDiv = document.getElementById('message');
-            const debugDiv = document.getElementById('debugInfo');
 
-            // 验证订单编号
             if (!orderNo) {
-                showMessage('请输入订单编号', 'error');
+                showMessage('请先输入订单编号哦', 'error');
                 return;
             }
 
-            // 验证 code
             if (!authCode) {
-                showMessage('正在获取用户信息，请稍等...', 'error');
+                showMessage('正在获取您的信息，请稍等片刻~', 'error');
                 return;
             }
 
-            // 禁用按钮，显示加载状态
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="loading"></span>提交中...';
+            submitBtn.innerHTML = '<span class="loading"></span>正在关联...';
             messageDiv.style.display = 'none';
 
-            // 准备请求数据 - 固定 userId 为 peidi2，传 code 和 otid
             const requestData = {
                 userId: 'peidi2',
                 code: authCode,
@@ -667,13 +786,7 @@
             };
 
             console.log('提交数据:', requestData);
-            debugDiv.innerHTML += `
-                <div style="margin-top: 8px;"><strong>⏳ 正在提交订单...</strong></div>
-                <div style="margin-top: 4px;">userId: peidi2</div>
-                <div style="margin-top: 4px;">otid: ${orderNo}</div>
-            `;
 
-            // 调用后端接口
             fetch(API_URL, {
                 method: 'POST',
                 headers: {
@@ -689,37 +802,19 @@
                 })
                 .then(data => {
                     console.log('接口返回:', data);
-                    debugDiv.innerHTML += `
-                        <div style="margin-top: 8px;"><strong>📦 后端返回:</strong></div>
-                        <div style="margin-top: 4px;">${JSON.stringify(data)}</div>
-                    `;
                     if (data.success || data.code === 200) {
-                        showMessage('订单关联成功！', 'success');
-                        debugDiv.innerHTML += `
-                            <div style="color: #52c41a; margin-top: 8px;"><strong>✅ 订单关联成功!</strong></div>
-                        `;
-                        setTimeout(() => {
-                            if (typeof wx !== 'undefined' && wx.miniProgram) {
-                                wx.miniProgram.navigateBack();
-                            }
-                        }, 1500);
+                        showStatusOverlay('success', '关联成功啦！', '您的订单已与佩蒂数据中心成功绑定，接下来可以享受专属服务了哦~');
+                        createConfetti();
                     } else {
-                        const errorMsg = data.message || '订单关联失败，请重试';
-                        showMessage(errorMsg, 'error');
-                        debugDiv.innerHTML += `
-                            <div style="color: #ff4d4f; margin-top: 8px;"><strong>❌ 关联失败:</strong> ${errorMsg}</div>
-                        `;
+                        const errorMsg = data.message || '订单关联失败，请检查订单编号是否正确';
+                        showStatusOverlay('error', '关联失败了', errorMsg);
                     }
                 })
                 .catch(error => {
                     console.error('请求错误:', error);
-                    showMessage('网络错误，请稍后重试', 'error');
-                    debugDiv.innerHTML += `
-                        <div style="color: #ff4d4f; margin-top: 8px;"><strong>❌ 请求失败:</strong> ${error.message}</div>
-                    `;
+                    showStatusOverlay('error', '网络有点小问题', '请检查您的网络连接后再试一次哦~');
                 })
                 .finally(() => {
-                    // 恢复按钮状态
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '确定关联';
                 });
@@ -730,6 +825,53 @@
             const messageDiv = document.getElementById('message');
             messageDiv.textContent = text;
             messageDiv.className = 'message ' + type;
+        }
+
+        // 显示状态遮罩层
+        function showStatusOverlay(type, title, desc) {
+            const overlay = document.getElementById('statusOverlay');
+            const iconWrapper = document.getElementById('statusIconWrapper');
+            const successIcon = document.getElementById('successIcon');
+            const errorIcon = document.getElementById('errorIcon');
+            const statusTitle = document.getElementById('statusTitle');
+            const statusDesc = document.getElementById('statusDesc');
+            const statusBtn = document.getElementById('statusBtn');
+
+            iconWrapper.className = 'status-icon-wrapper ' + type;
+            successIcon.style.display = type === 'success' ? 'block' : 'none';
+            errorIcon.style.display = type === 'error' ? 'block' : 'none';
+            statusTitle.textContent = title;
+            statusDesc.textContent = desc;
+            statusBtn.textContent = type === 'success' ? '好的' : '重试';
+
+            overlay.classList.add('active');
+        }
+
+        // 关闭状态遮罩层
+        function closeStatusOverlay() {
+            const overlay = document.getElementById('statusOverlay');
+            overlay.classList.remove('active');
+        }
+
+        // 创建彩色纸屑动画
+        function createConfetti() {
+            const colors = ['#52c41a', '#13c2c2', '#1890ff', '#722ed1', '#eb2f96', '#faad14'];
+            const overlay = document.getElementById('statusOverlay');
+
+            for (let i = 0; i < 60; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '30%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.animationDuration = (Math.random() * 1 + 1) + 's';
+                overlay.appendChild(confetti);
+
+                setTimeout(() => {
+                    confetti.remove();
+                }, 2000);
+            }
         }
     </script>
 </body>
