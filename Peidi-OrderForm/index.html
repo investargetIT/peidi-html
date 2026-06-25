@@ -850,7 +850,28 @@
         // 关闭状态遮罩层
         function closeStatusOverlay() {
             const overlay = document.getElementById('statusOverlay');
-            overlay.classList.remove('active');
+            const iconWrapper = document.getElementById('statusIconWrapper');
+            const isSuccess = iconWrapper.classList.contains('success');
+
+            if (isSuccess) {
+                closePage();
+            } else {
+                overlay.classList.remove('active');
+            }
+        }
+
+        // 关闭当前页面
+        function closePage() {
+            if (window.WeixinJSBridge) {
+                // 微信环境
+                WeixinJSBridge.call('closeWindow');
+            } else if (window.wx && window.wx.closeWindow) {
+                // 企业微信环境
+                window.wx.closeWindow();
+            } else {
+                // 普通浏览器环境
+                window.close();
+            }
         }
 
         // 创建彩色纸屑动画
