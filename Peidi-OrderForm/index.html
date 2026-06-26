@@ -566,10 +566,10 @@
             }
         }
 
-        /* 隐藏调试信息 */
+        /* 显示调试信息 */
         #debugInfo,
         .debug-container {
-            display: none !important;
+            display: block !important;
         }
     </style>
 </head>
@@ -724,6 +724,12 @@
         // 后端接口地址 - 表单提交接口
         const API_URL = 'https://api.peidigroup.cn/ai/qywx/from';
 
+        // 订单验证接口
+        const VERIFY_ORDER_URL = '/oms/orders/countByOtid';
+
+        // API Token - 从环境变量获取
+        const API_TOKEN = '1930161144376926172';
+
         // 企业微信 CorpID
         const CORP_ID = 'ww3e4d6806d3572c2e';
 
@@ -759,6 +765,45 @@
             window.location.href = authUrl;
         }
 
+        // 验证订单是否存在
+        function verifyOrder(orderNo) {
+            const url = new URL(VERIFY_ORDER_URL, window.location.origin);
+            url.searchParams.append('otid', orderNo);
+
+            return fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': API_TOKEN,
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('验证订单请求失败');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('订单验证接口返回:', data);
+
+                    // 检查返回数据
+                    if (data.success === false && data.code === 100100012) {
+                        throw new Error('身份验证失败，请联系客服');
+                    }
+
+                    if (data.success && data.data !== null) {
+                        // 检查数量是否大于0
+                        const count = typeof data.data === 'number' ? data.data : parseInt(data.data);
+                        if (count > 0) {
+                            return true;
+                        }
+                    }
+
+                    // 默认返回false
+                    return false;
+                });
+        }
+
         // 提交订单关联
         function submitOrder() {
             const orderNo = document.getElementById('orderNo').value.trim();
@@ -776,43 +821,57 @@
             }
 
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="loading"></span>正在关联...';
+            submitBtn.innerHTML = '<span class="loading"></span>正在验证订单...';
             messageDiv.style.display = 'none';
 
-            const requestData = {
-                userId: 'peidi2',
-                code: authCode,
-                otid: orderNo
-            };
-
-            console.log('提交数据:', requestData);
-
-            fetch(API_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestData)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('网络请求失败');
+            // 先验证订单
+            verifyOrder(orderNo)
+                .then(orderExists => {
+                    if (!orderExists) {
+                        showStatusOverlay('error', '订单未找到', '该订单还未抓取或不存在，请检查订单编号是否正确哦~');
+                        return Promise.reject(new Error('订单不存在'));
                     }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('接口返回:', data);
-                    if (data.success || data.code === 200) {
-                        showStatusOverlay('success', '关联成功啦！', '您的订单已与佩蒂数据中心成功绑定，接下来可以享受专属服务了哦~');
-                        createConfetti();
-                    } else {
-                        const errorMsg = data.message || '订单关联失败，请检查订单编号是否正确';
-                        showStatusOverlay('error', '关联失败了', errorMsg);
-                    }
+
+                    // 订单验证成功，继续提交
+                    submitBtn.innerHTML = '<span class="loading"></span>正在关联...';
+
+                    const requestData = {
+                        userId: 'peidi2',
+                        code: authCode,
+                        otid: orderNo
+                    };
+
+                    console.log('提交数据:', requestData);
+
+                    return fetch(API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(requestData)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('网络请求失败');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('接口返回:', data);
+                            if (data.success || data.code === 200) {
+                                showStatusOverlay('success', '关联成功啦！', '您的订单已与佩蒂数据中心成功绑定，接下来可以享受专属服务了哦~');
+                                createConfetti();
+                            } else {
+                                const errorMsg = data.message || '订单关联失败，请检查订单编号是否正确';
+                                showStatusOverlay('error', '关联失败了', errorMsg);
+                            }
+                        });
                 })
                 .catch(error => {
                     console.error('请求错误:', error);
-                    showStatusOverlay('error', '网络有点小问题', '请检查您的网络连接后再试一次哦~');
+                    if (error.message !== '订单不存在') {
+                        showStatusOverlay('error', '网络有点小问题', '请检查您的网络连接后再试一次哦~');
+                    }
                 })
                 .finally(() => {
                     submitBtn.disabled = false;
