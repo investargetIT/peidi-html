@@ -2,7 +2,11 @@
 
 ## 功能说明
 
-用户在企业微信中打开此页面，填写订单编号后点击确定，系统会通过企业微信 OAuth 获取用户授权，然后将订单编号和授权信息一起发送给后端接口进行关联。
+用户在企业微信中打开此页面，填写订单编号后点击确定，系统会：
+1. 验证订单编号是否为空
+2. 通过订单验证接口检查订单是否存在（data > 0 表示存在）
+3. 通过企业微信 OAuth 获取用户授权
+4. 将订单编号和授权信息一起发送给后端接口进行关联
 
 ## 文件说明
 
@@ -18,6 +22,12 @@
 // 后端接口地址 - 表单提交接口
 const API_URL = 'https://api.peidigroup.cn/ai/qywx/from';
 
+// 订单验证接口
+const VERIFY_ORDER_URL = 'https://api.peidigroup.cn/oms/orders/countByOtid';
+
+// API Token
+const API_TOKEN = '1930161144376926172';
+
 // 企业微信 CorpID
 const CORP_ID = 'ww3e4d6806d3572c2e';
 ```
@@ -28,25 +38,57 @@ const CORP_ID = 'ww3e4d6806d3572c2e';
 
 ### 3. 后端接口要求
 
-后端接口需要接收 POST 请求，请求体格式如下：
+#### 订单验证接口
 
-```json
-{
-  "userId": "peidi2",
-  "code": "企业微信 OAuth code",
-  "otid": "订单编号"
-}
-```
+- **方法**: GET
+- **URL**: `VERIFY_ORDER_URL`
+- **参数**: `otid` (订单编号)
+- **请求头**: 
+  ```
+  Authorization: API_TOKEN
+  Content-Type: application/json
+  ```
+- **返回格式**:
+  ```json
+  {
+    "code": 200,
+    "msg": "success",
+    "success": true,
+    "data": 0
+  }
+  ```
+  - `data > 0` 表示订单存在
+  - `data <= 0` 表示订单不存在
 
-返回格式建议：
+#### 订单关联接口
 
-```json
-{
-  "success": true,
-  "code": 200,
-  "message": "关联成功"
-}
-```
+- **方法**: POST
+- **URL**: `API_URL`
+- **请求体格式**:
+  ```json
+  {
+    "userId": "peidi2",
+    "code": "企业微信 OAuth code",
+    "otid": "订单编号"
+  }
+  ```
+- **返回格式**:
+  ```json
+  {
+    "success": true,
+    "code": 200,
+    "message": "关联成功"
+  }
+  ```
+
+## 功能特性
+
+- ✅ 订单编号非空校验
+- ✅ 订单存在性验证
+- ✅ 企业微信 OAuth 集成
+- ✅ 成功/失败动效展示
+- ✅ 微信/企业微信环境下关闭页面功能
+- ✅ 调试模式（点击"调试"按钮开启）
 
 ## 技术栈
 
